@@ -1,8 +1,10 @@
-﻿using ReactiveUI;
+﻿using System;
+
+using ReactiveUI;
 
 namespace Anvil.Framework.MVVM
 {
-    public abstract class RoutableViewModel : ReactiveObject, IRoutableViewModel
+    public abstract class RoutableViewModel : DisposableViewModel, IRoutableViewModel, IDisposable
     {
         protected RoutableViewModel(string urlPathSegment, IScreen hostScreen)
         {

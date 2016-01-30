@@ -5,9 +5,21 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:local="clr-namespace:Anvil.Views.ConfigurationUI"
-  mc:Ignorable="d"
+  mc:Ignorable="d" d:DataContext="{d:DesignInstance local:MainConfigurationViewModel}"
   d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
-    <TextBlock Text="Main config view" />
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="200" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <TreeView Grid.Column="0" ItemsSource="{Binding LaunchGroups}">
+      <TreeView.ItemTemplate>
+        <HierarchicalDataTemplate ItemsSource="{Binding ChildGroups}">
+          <TextBlock Text="{Binding Model.Name}" />
+        </HierarchicalDataTemplate>
+      </TreeView.ItemTemplate>
+
+    </TreeView>
   </Grid>
 </local:MainConfigurationViewImpl>
