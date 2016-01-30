@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 
 using Anvil.Models;
@@ -7,7 +8,7 @@ using DynamicData;
 
 namespace Anvil.Services.Data
 {
-    public interface IDataService
+    public interface IDataService : IService
     {
         IObservableCache<LaunchGroup, long> LaunchGroups { get; }
 
@@ -22,6 +23,12 @@ namespace Anvil.Services.Data
     {
         private readonly SourceCache<LaunchGroup, long> mLaunchGroups = new SourceCache<LaunchGroup, long>(lg => lg.Key);
         private readonly SourceCache<LaunchItem, long> mLaunchItems = new SourceCache<LaunchItem, long>(li => li.Key);
+        private readonly IPersistenceService mPersistenceService;
+
+        public DataService(IPersistenceService persistenceService)
+        {
+            mPersistenceService = persistenceService;
+        }
 
         public IObservableCache<LaunchGroup, long> LaunchGroups => mLaunchGroups;
 
@@ -52,47 +59,12 @@ namespace Anvil.Services.Data
                 mLaunchGroups.Clear();
                 mLaunchItems.Clear();
 
-                mLaunchGroups.AddOrUpdate(new[]
-                {
-                    new LaunchGroup
-                    {
-                        Name = "One",
-                        Id = 1
-                    },
-                    new LaunchGroup
-                    {
-                        Name = "Two",
-                        Id = 2
-                    },
-                    new LaunchGroup
-                    {
-                        Name = "Three",
-                        Id = 3,
-                        ParentGroupId = 1
-                    }
-                });
+                var groups = mPersistenceService.GetLaunchGroups();
+                var items = mPersistenceService.GetLaunchItems();
 
-                mLaunchItems.AddOrUpdate(new[]
-                {
-                    new LaunchItem
-                    {
-                        Name = "Item 1",
-                        Id = 1,
-                        ParentGroupId = 1
-                    },
-                    new LaunchItem
-                    {
-                        Name = "Item 2",
-                        Id = 2,
-                        ParentGroupId = 2
-                    },
-                    new LaunchItem
-                    {
-                        Name = "Item 3",
-                        Id = 3,
-                        ParentGroupId = 3
-                    }
-                });
+                return Task.WhenAll(
+                    groups.ForEachAsync(mLaunchGroups.AddOrUpdate),
+                    items.ForEachAsync(mLaunchItems.AddOrUpdate));
             });
         }
     }
