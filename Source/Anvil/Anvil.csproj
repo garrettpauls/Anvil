@@ -121,6 +121,7 @@
     <Compile Include="Framework\MVVM\DisposableViewModel.cs" />
     <Compile Include="Framework\MVVM\RoutableViewModel.cs" />
     <Compile Include="Framework\MVVM\View.cs" />
+    <Compile Include="Framework\Reactive\ReactiveNotifyPropertyChangedExtensions.cs" />
     <Compile Include="Framework\Reactive\ReactiveFormattableSqlProviderExtensions.cs" />
     <Compile Include="Framework\ResourceExtensions.cs" />
     <Compile Include="Framework\Xaml\Behaviors\TreeViewSelectedItemBehavior.cs" />

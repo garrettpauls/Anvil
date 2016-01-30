@@ -20,7 +20,11 @@ namespace Anvil.Services.Data
 
         Task Remove(LaunchGroup grp);
 
-        Task Save(LaunchGroup grp);
+        Task Save(LaunchGroup grp, string changedPropertyName = null);
+
+        Task Save(LaunchItem item, string changedPropertyName = null);
+
+        Task Save(EnvironmentVariable envVar, string changedPropertyName = null);
     }
 
     public sealed class PersistenceService : IPersistenceService, IInitializableService
@@ -91,9 +95,33 @@ namespace Anvil.Services.Data
             throw new NotImplementedException();
         }
 
-        public Task Save(LaunchGroup grp)
+        public Task Save(LaunchGroup grp, string changedPropertyName = null)
         {
-            throw new NotImplementedException();
+            return mSql.Run(sql => sql.ExecuteAsync($@"
+UPDATE LaunchGroup
+   SET ParentId = {grp.ParentGroupId}
+     , Name = {grp.Name}
+ WHERE Id = {grp.Id}"));
+        }
+
+        public Task Save(LaunchItem item, string changedPropertyName = null)
+        {
+            return mSql.Run(sql => sql.ExecuteAsync($@"
+UPDATE LaunchItem
+   SET ParentId = {item.ParentGroupId}
+     , Name = {item.Name}
+     , Path = {item.Path}
+     , WorkingDirectory = {item.WorkingDirectory}
+ WHERE Id = {item.Id}"));
+        }
+
+        public Task Save(EnvironmentVariable envVar, string changedPropertyName = null)
+        {
+            return mSql.Run(sql => sql.ExecuteAsync($@"
+UPDATE EnvironmentVariable
+   SET Key = {envVar.Key}
+     , Value = {envVar.Value}
+ WHERE Id = {envVar.Id}"));
         }
     }
 }
