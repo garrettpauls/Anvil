@@ -5,6 +5,8 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:local="clr-namespace:Anvil.Views.ConfigurationUI"
+  xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+  xmlns:behaviors="clr-namespace:Anvil.Framework.Xaml.Behaviors"
   mc:Ignorable="d" d:DataContext="{d:DesignInstance local:MainConfigurationViewModel}"
   d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
@@ -14,12 +16,23 @@
     </Grid.ColumnDefinitions>
 
     <TreeView Grid.Column="0" ItemsSource="{Binding LaunchGroups}">
+      <i:Interaction.Behaviors>
+        <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedGroup, Mode=OneWayToSource}" />
+      </i:Interaction.Behaviors>
       <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding ChildGroups}">
           <TextBlock Text="{Binding Model.Name}" />
         </HierarchicalDataTemplate>
       </TreeView.ItemTemplate>
-
+      <TreeView.ItemContainerStyle>
+        <Style TargetType="TreeViewItem">
+          <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+          <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+        </Style>
+      </TreeView.ItemContainerStyle>
     </TreeView>
+
+    <TextBlock Grid.Column="1" Text="{Binding Path=SelectedGroup.Model.Name, StringFormat='{}Selected group: {0}'}" />
+
   </Grid>
 </local:MainConfigurationViewImpl>

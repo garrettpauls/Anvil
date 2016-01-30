@@ -95,6 +95,7 @@
       <HintPath>..\..\packages\Rx-Xaml.2.2.5\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -111,6 +112,7 @@
     <Compile Include="Framework\MVVM\DisposableViewModel.cs" />
     <Compile Include="Framework\MVVM\RoutableViewModel.cs" />
     <Compile Include="Framework\MVVM\View.cs" />
+    <Compile Include="Framework\Xaml\Behaviors\TreeViewSelectedItemBehavior.cs" />
     <Compile Include="Models\EnvironmentVariable.cs" />
     <Compile Include="Models\LaunchGroup.cs" />
     <Compile Include="Models\LaunchItem.cs" />

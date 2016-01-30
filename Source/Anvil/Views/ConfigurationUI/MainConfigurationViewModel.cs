@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 using Anvil.Framework.ComponentModel;
 using Anvil.Framework.MVVM;
@@ -17,6 +18,8 @@ namespace Anvil.Views.ConfigurationUI
     {
         private readonly ReadOnlyObservableCollection<LaunchGroupTreeNode> mLaunchGroups;
 
+        private LaunchGroupTreeNode mSelectedGroup;
+
         public MainConfigurationViewModel(IDataService dataService, IScreen hostScreen)
             : base("config/main", hostScreen)
         {
@@ -27,15 +30,29 @@ namespace Anvil.Views.ConfigurationUI
                 .Sort(SortExpressionComparer<LaunchGroupTreeNode>.Ascending(x => x.Model.Name))
                 .Bind(out mLaunchGroups).DisposeMany()
                 .Subscribe().TrackWith(Disposables);
+
+            var firstGroup = mLaunchGroups.FirstOrDefault();
+            if(firstGroup != null)
+            {
+                firstGroup.IsSelected = true;
+            }
         }
 
         public ReadOnlyObservableCollection<LaunchGroupTreeNode> LaunchGroups => mLaunchGroups;
+
+        public LaunchGroupTreeNode SelectedGroup
+        {
+            get { return mSelectedGroup; }
+            set { this.RaiseAndSetIfChanged(ref mSelectedGroup, value); }
+        }
     }
 
     public sealed class LaunchGroupTreeNode : DisposableViewModel
     {
         private readonly ReadOnlyObservableCollection<LaunchGroupTreeNode> mChildGroups;
         private readonly Node<LaunchGroup, long> mNode;
+        private bool mIsExpanded;
+        private bool mIsSelected;
 
         public LaunchGroupTreeNode(Node<LaunchGroup, long> node)
         {
@@ -49,6 +66,18 @@ namespace Anvil.Views.ConfigurationUI
         }
 
         public ReadOnlyObservableCollection<LaunchGroupTreeNode> ChildGroups => mChildGroups;
+
+        public bool IsExpanded
+        {
+            get { return mIsExpanded; }
+            set { this.RaiseAndSetIfChanged(ref mIsExpanded, value); }
+        }
+
+        public bool IsSelected
+        {
+            get { return mIsSelected; }
+            set { this.RaiseAndSetIfChanged(ref mIsSelected, value); }
+        }
 
         public LaunchGroup Model { get; }
     }
