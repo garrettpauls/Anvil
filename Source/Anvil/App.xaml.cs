@@ -10,9 +10,9 @@ namespace Anvil
     public partial class App : Application
     {
         private readonly ILogger mLog;
-        private readonly Func<MainWindow> mMainWindowFactory;
+        private readonly Func<Shell> mMainWindowFactory;
 
-        public App(Func<MainWindow> mainWindowFactory, ILogger log)
+        public App(Func<Shell> mainWindowFactory, ILogger log)
         {
             mMainWindowFactory = mainWindowFactory;
             mLog = log;

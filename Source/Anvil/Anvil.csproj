@@ -106,9 +106,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Framework\AutofacDependencyResolver.cs" />
+    <Compile Include="Framework\ComponentModel\DisposableTracker.cs" />
+    <Compile Include="Framework\MVVM\RoutableViewModel.cs" />
+    <Compile Include="Framework\MVVM\View.cs" />
+    <Compile Include="Views\ConfigurationUI\MainConfigurationView.xaml.cs">
+      <DependentUpon>MainConfigurationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ConfigurationUI\MainConfigurationViewModel.cs" />
+    <Compile Include="Views\Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShellViewModel.cs" />
     <Compile Include="Views\ViewModule.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -119,7 +128,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\MainWindow.xaml">
+    <Page Include="Views\ConfigurationUI\MainConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Shell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -158,6 +171,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
