@@ -21,7 +21,14 @@
       </i:Interaction.Behaviors>
       <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding ChildGroups}">
-          <TextBlock Text="{Binding Model.Name}" />
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="{Binding Model.Name}" VerticalAlignment="Center" />
+            <Button Grid.Column="1" Style="{StaticResource Style_Button_Path}" Content="{StaticResource Path_FolderPlus}" Command="{Binding AddGroupCommand}" />
+          </Grid>
         </HierarchicalDataTemplate>
       </TreeView.ItemTemplate>
       <TreeView.ItemContainerStyle>
@@ -32,7 +39,11 @@
       </TreeView.ItemContainerStyle>
     </TreeView>
 
-    <TextBlock Grid.Column="1" Text="{Binding Path=SelectedGroup.Model.Name, StringFormat='{}Selected group: {0}'}" />
+    <StackPanel Grid.Column="1" Orientation="Vertical" DataContext="{Binding SelectedGroup}">
+      <HeaderedContentControl Header="Name">
+        <TextBox Text="{Binding Model.Name}" />
+      </HeaderedContentControl>
+    </StackPanel>
 
   </Grid>
 </local:MainConfigurationViewImpl>

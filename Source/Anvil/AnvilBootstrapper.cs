@@ -8,6 +8,8 @@ using Autofac.Extras.NLog;
 
 using Splat;
 
+using ILogger = Autofac.Extras.NLog.ILogger;
+
 namespace Anvil
 {
     public sealed class AnvilBootstrapper
@@ -21,6 +23,8 @@ namespace Anvil
             {
                 Locator.Current = Locator.CurrentMutable = new AutofacDependencyResolver(lifetime);
 
+                _ConfigureLogging(lifetime);
+
                 var app = lifetime.Resolve<App>();
                 app.InitializeComponent();
                 app.Run();
@@ -31,7 +35,22 @@ namespace Anvil
         {
             builder.RegisterAssemblyModules(typeof(AnvilBootstrapper).Assembly);
             builder.RegisterModule<NLogModule>();
-            builder.RegisterType<App>().AsSelf().As<Application>();
+            builder.RegisterModule<SimpleNLogModule>();
+
+            builder.RegisterType<App>().AsSelf().As<Application>().SingleInstance();
+            builder.Register(context => AppDomain.CurrentDomain).As<AppDomain>().SingleInstance();
+        }
+
+        private static void _ConfigureLogging(IContainer lifetime)
+        {
+            var app = lifetime.Resolve<App>();
+            var domain = lifetime.Resolve<AppDomain>();
+
+            var log = lifetime.Resolve<ILogger>();
+
+            app.DispatcherUnhandledException += (sender, args) => log.Error(args.Exception);
+            domain.UnhandledException += (sender, args) => log.Error((Exception) args.ExceptionObject);
+            domain.FirstChanceException += (sender, args) => log.Error(args.Exception);
         }
 
         [STAThread]

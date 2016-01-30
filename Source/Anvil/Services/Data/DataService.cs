@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 
 using Anvil.Models;
 
@@ -12,6 +13,8 @@ namespace Anvil.Services.Data
 
         IObservableCache<LaunchItem, long> LaunchItems { get; }
 
+        Task AddLaunchGroupAsync(LaunchGroup group);
+
         Task RefreshDataAsync();
     }
 
@@ -23,6 +26,19 @@ namespace Anvil.Services.Data
         public IObservableCache<LaunchGroup, long> LaunchGroups => mLaunchGroups;
 
         public IObservableCache<LaunchItem, long> LaunchItems => mLaunchItems;
+
+        public Task AddLaunchGroupAsync(LaunchGroup group)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                if(group.Id == 0)
+                {
+                    group.Id = mLaunchGroups.Keys.Max() + 1;
+                }
+
+                mLaunchGroups.AddOrUpdate(group);
+            });
+        }
 
         public Task InitializeAsync()
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 
 using Anvil.Framework.ComponentModel;
 using Anvil.Framework.MVVM;
@@ -25,8 +26,9 @@ namespace Anvil.Views.ConfigurationUI
         {
             dataService
                 .LaunchGroups.Connect()
+                .ObserveOnDispatcher()
                 .TransformToTree(grp => grp.ParentGroupId ?? -1)
-                .Transform(x => new LaunchGroupTreeNode(x))
+                .Transform(x => new LaunchGroupTreeNode(x, dataService))
                 .Sort(SortExpressionComparer<LaunchGroupTreeNode>.Ascending(x => x.Model.Name))
                 .Bind(out mLaunchGroups).DisposeMany()
                 .Subscribe().TrackWith(Disposables);
@@ -50,20 +52,31 @@ namespace Anvil.Views.ConfigurationUI
     public sealed class LaunchGroupTreeNode : DisposableViewModel
     {
         private readonly ReadOnlyObservableCollection<LaunchGroupTreeNode> mChildGroups;
+        private readonly IDataService mDataService;
         private readonly Node<LaunchGroup, long> mNode;
         private bool mIsExpanded;
         private bool mIsSelected;
 
-        public LaunchGroupTreeNode(Node<LaunchGroup, long> node)
+        public LaunchGroupTreeNode(Node<LaunchGroup, long> node, IDataService dataService)
         {
             mNode = node;
+            mDataService = dataService;
             Model = node.Item;
             node.Children.Connect()
-                .Transform(x => new LaunchGroupTreeNode(x))
+                .ObserveOnDispatcher()
+                .Transform(x => new LaunchGroupTreeNode(x, dataService))
                 .Sort(SortExpressionComparer<LaunchGroupTreeNode>.Ascending(x => x.Model.Name))
                 .Bind(out mChildGroups).DisposeMany()
                 .Subscribe().TrackWith(Disposables);
+
+            AddGroupCommand = ReactiveCommand.Create();
+            AddGroupCommand.Subscribe(_AddGroup).TrackWith(Disposables);
+
+            IsSelected = true;
+            IsExpanded = true;
         }
+
+        public ReactiveCommand<object> AddGroupCommand { get; }
 
         public ReadOnlyObservableCollection<LaunchGroupTreeNode> ChildGroups => mChildGroups;
 
@@ -80,5 +93,14 @@ namespace Anvil.Views.ConfigurationUI
         }
 
         public LaunchGroup Model { get; }
+
+        private void _AddGroup(object _)
+        {
+            mDataService.AddLaunchGroupAsync(new LaunchGroup
+            {
+                Name = "New group",
+                ParentGroupId = Model.Id
+            });
+        }
     }
 }
