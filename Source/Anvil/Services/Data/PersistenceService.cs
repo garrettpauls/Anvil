@@ -38,7 +38,11 @@ namespace Anvil.Services.Data
 
         public Task Add(LaunchGroup grp)
         {
-            throw new NotImplementedException();
+            return mSql.Run(async sql => grp.Id = await sql.ExecuteScalarAsync<long>($@"
+insert into LaunchGroup (Name      , ParentId)
+                 values ({grp.Name}, {grp.ParentGroupId})
+;select last_insert_rowid()
+"));
         }
 
         public IObservable<LaunchGroup> GetLaunchGroups()

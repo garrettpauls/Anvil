@@ -83,10 +83,7 @@ namespace Anvil.Services.Data
         {
             return Task.Factory.StartNew(() =>
             {
-                if(group.Id == 0)
-                {
-                    group.Id = mLaunchGroups.Keys.Max() + 1;
-                }
+                mPersistenceService.Add(group);
 
                 mLaunchGroups.AddOrUpdate(group);
             });

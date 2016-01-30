@@ -2,6 +2,7 @@
 using System.Data.Common;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Autofac.Extras.NLog;
@@ -22,7 +23,7 @@ namespace Anvil.Services.Data
         TResult Run<TResult>(Func<IFormattableSqlProvider, TResult> action);
     }
 
-    public sealed class SqlService : ISqlService, IInitializableService
+    public sealed class SqlService : ISqlService, IInitializableService, IDisposable
     {
         private readonly string mFile;
         private readonly ILogger mLog;
@@ -42,8 +43,29 @@ namespace Anvil.Services.Data
                     ForeignKeys = true
                 };
 
-                return FormattableSqlFactory.For(new AdoNetSqlProvider(dbProvider, connection.ToString()));
+                var sql = FormattableSqlFactory.For(new AdoNetSqlProvider(dbProvider, connection.ToString()));
+                sql.CommandPrepared += _HandleCommandPrepared;
+                return sql;
             });
+        }
+
+        private void _HandleCommandPrepared(FormattableSqlProvider sender, DbCommand command)
+        {
+            if(mLog.IsTraceEnabled)
+            {
+                var parameters = string.Join(
+                    ", ", command.Parameters.OfType<DbParameter>()
+                                 .Select(par => $"{par.ParameterName}={par.Value}"));
+                mLog.Trace($"DbCommand Text: `{command.CommandText}` Parameters: {parameters}");
+            }
+        }
+
+        public void Dispose()
+        {
+            if(mSql.IsValueCreated)
+            {
+                mSql.Value.CommandPrepared -= _HandleCommandPrepared;
+            }
         }
 
         public Task EnsureDatabaseExists()
