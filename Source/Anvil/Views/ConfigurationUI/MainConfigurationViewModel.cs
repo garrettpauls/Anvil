@@ -69,6 +69,11 @@ namespace Anvil.Views.ConfigurationUI
                 .Bind(out mChildGroups).DisposeMany()
                 .Subscribe().TrackWith(Disposables);
 
+            Environment = new EnvironmentEditViewModel(
+                dataService.GetEnvironmentVariablesFor(node.Item).Connect(),
+                envVar => dataService.AddEnvironmentVariable(node.Item, envVar),
+                envVar => dataService.DeleteEnvironmentVariable(node.Item, envVar));
+
             AddGroupCommand = ReactiveCommand.Create();
             AddGroupCommand.Subscribe(_AddGroup).TrackWith(Disposables);
 
@@ -79,6 +84,8 @@ namespace Anvil.Views.ConfigurationUI
         public ReactiveCommand<object> AddGroupCommand { get; }
 
         public ReadOnlyObservableCollection<LaunchGroupTreeNode> ChildGroups => mChildGroups;
+
+        public EnvironmentEditViewModel Environment { get; }
 
         public bool IsExpanded
         {

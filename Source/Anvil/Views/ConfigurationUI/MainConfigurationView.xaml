@@ -14,6 +14,10 @@
       <ColumnDefinition Width="200" />
       <ColumnDefinition Width="*" />
     </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
 
     <TreeView Grid.Column="0" ItemsSource="{Binding LaunchGroups}">
       <i:Interaction.Behaviors>
@@ -39,11 +43,27 @@
       </TreeView.ItemContainerStyle>
     </TreeView>
 
-    <StackPanel Grid.Column="1" Orientation="Vertical" DataContext="{Binding SelectedGroup}">
-      <HeaderedContentControl Header="Name">
-        <TextBox Text="{Binding Model.Name}" />
-      </HeaderedContentControl>
-    </StackPanel>
+    <Button Grid.Column="0" Grid.Row="1">
+      <StackPanel Orientation="Horizontal">
+        <Path Data="{StaticResource Path_FolderPlus}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+              Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <TextBlock Text="New Launch Group" />
+      </StackPanel>
+    </Button>
+
+    <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" DataContext="{Binding SelectedGroup}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <StackPanel Orientation="Vertical">
+        <HeaderedContentControl Header="Name">
+          <TextBox Text="{Binding Model.Name}" />
+        </HeaderedContentControl>
+      </StackPanel>
+
+      <local:EnvironmentEditView Grid.Row="1" DataContext="{Binding Environment}" />
+    </Grid>
 
   </Grid>
 </local:MainConfigurationViewImpl>

@@ -121,6 +121,7 @@
     <Compile Include="Framework\MVVM\DisposableViewModel.cs" />
     <Compile Include="Framework\MVVM\RoutableViewModel.cs" />
     <Compile Include="Framework\MVVM\View.cs" />
+    <Compile Include="Framework\Reactive\ReactiveCommandEx.cs" />
     <Compile Include="Framework\Reactive\ReactiveNotifyPropertyChangedExtensions.cs" />
     <Compile Include="Framework\Reactive\ReactiveFormattableSqlProviderExtensions.cs" />
     <Compile Include="Framework\ResourceExtensions.cs" />
@@ -134,6 +135,10 @@
     <Compile Include="Services\Data\SqlService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\ServiceModule.cs" />
+    <Compile Include="Views\ConfigurationUI\EnvironmentEditView.xaml.cs">
+      <DependentUpon>EnvironmentEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigurationUI\EnvironmentEditViewModel.cs" />
     <Compile Include="Views\ConfigurationUI\MainConfigurationView.xaml.cs">
       <DependentUpon>MainConfigurationView.xaml</DependentUpon>
     </Compile>
@@ -153,6 +158,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Theme\Images.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigurationUI\EnvironmentEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
