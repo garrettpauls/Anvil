@@ -129,6 +129,7 @@
     <Compile Include="Framework\Xaml\Actions\SelectAllTextAction.cs" />
     <Compile Include="Framework\Xaml\Behaviors\TreeViewSelectedItemBehavior.cs" />
     <Compile Include="Framework\Xaml\Controls\Extensions\TextBoxEx.cs" />
+    <Compile Include="Framework\Xaml\Converters\TextToUpperCaseConverter.cs" />
     <Compile Include="Framework\Xaml\Triggers\KeyGestureTrigger.cs" />
     <Compile Include="Models\EnvironmentVariable.cs" />
     <Compile Include="Models\LaunchGroup.cs" />
@@ -161,6 +162,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Theme\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Theme\Images.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

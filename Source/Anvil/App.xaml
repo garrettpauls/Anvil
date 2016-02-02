@@ -5,6 +5,7 @@
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Theme/Converters.xaml" />
         <ResourceDictionary Source="Theme/DefaultTheme.xaml" />
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>

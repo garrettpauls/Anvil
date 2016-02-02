@@ -19,7 +19,7 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <TreeView Grid.Column="0" ItemsSource="{Binding LaunchGroups}">
+    <TreeView Grid.Column="0" ItemsSource="{Binding LaunchGroups}" Margin="4 0 4 4" BorderThickness="0">
       <i:Interaction.Behaviors>
         <behaviors:TreeViewSelectedItemBehavior SelectedItem="{Binding SelectedGroup, Mode=OneWayToSource}" />
       </i:Interaction.Behaviors>
@@ -43,7 +43,7 @@
       </TreeView.ItemContainerStyle>
     </TreeView>
 
-    <Button Grid.Column="0" Grid.Row="1">
+    <Button Grid.Column="0" Grid.Row="1" Margin="4 0 4 4">
       <StackPanel Orientation="Horizontal">
         <Path Data="{StaticResource Path_FolderPlus}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
               Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -51,7 +51,7 @@
       </StackPanel>
     </Button>
 
-    <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" DataContext="{Binding SelectedGroup}">
+    <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" DataContext="{Binding SelectedGroup}" Margin="0 0 -4 -4">
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
@@ -62,7 +62,9 @@
         </HeaderedContentControl>
       </StackPanel>
 
-      <local:EnvironmentEditView Grid.Row="1" DataContext="{Binding Environment}" />
+      <HeaderedContentControl Grid.Row="1" Header="Environment" VerticalContentAlignment="Stretch">
+        <local:EnvironmentEditView DataContext="{Binding Environment}" Focusable="False" />
+      </HeaderedContentControl>
     </Grid>
 
   </Grid>

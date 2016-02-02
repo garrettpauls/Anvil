@@ -4,10 +4,39 @@
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="Images.xaml" />
   </ResourceDictionary.MergedDictionaries>
+
   <Style TargetType="HeaderedContentControl">
     <Setter Property="Focusable" Value="False" />
+    <Setter Property="Margin" Value="4" />
+    <Setter Property="HeaderTemplate">
+      <Setter.Value>
+        <DataTemplate>
+          <TextBlock Text="{Binding Converter={StaticResource Converter_TextToUpperCase}}" />
+        </DataTemplate>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="HeaderedContentControl">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="Auto" />
+              <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ContentPresenter Grid.Row="0" Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}" Margin="0 0 0 4" />
+            <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
+          </Grid>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
+
   <Style TargetType="TextBox">
     <Setter Property="extensions:TextBoxEx.SelectAllOnFocus" Value="True" />
+    <Setter Property="Margin" Value="0 0 4 4" />
+  </Style>
+
+  <Style TargetType="Button">
+    <Setter Property="Margin" Value="0 0 4 4" />
   </Style>
 </ResourceDictionary>
