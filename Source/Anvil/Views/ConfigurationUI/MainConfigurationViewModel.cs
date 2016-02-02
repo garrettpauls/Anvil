@@ -77,6 +77,9 @@ namespace Anvil.Views.ConfigurationUI
             AddGroupCommand = ReactiveCommand.Create();
             AddGroupCommand.Subscribe(_AddGroup).TrackWith(Disposables);
 
+            DeleteCommand = ReactiveCommand.Create();
+            DeleteCommand.Subscribe(_Delete).TrackWith(Disposables);
+
             IsSelected = true;
             IsExpanded = true;
         }
@@ -84,6 +87,8 @@ namespace Anvil.Views.ConfigurationUI
         public ReactiveCommand<object> AddGroupCommand { get; }
 
         public ReadOnlyObservableCollection<LaunchGroupTreeNode> ChildGroups => mChildGroups;
+
+        public ReactiveCommand<object> DeleteCommand { get; }
 
         public EnvironmentEditViewModel Environment { get; }
 
@@ -108,6 +113,11 @@ namespace Anvil.Views.ConfigurationUI
                 Name = "New group",
                 ParentGroupId = Model.Id
             });
+        }
+
+        private void _Delete(object _)
+        {
+            mDataService.RemoveLaunchGroupAsync(Model);
         }
     }
 }

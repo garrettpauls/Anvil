@@ -29,9 +29,11 @@
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" />
               <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="{Binding Model.Name}" VerticalAlignment="Center" />
             <Button Grid.Column="1" Style="{StaticResource Style_Button_Path}" Content="{StaticResource Path_FolderPlus}" Command="{Binding AddGroupCommand}" />
+            <Button Grid.Column="2" Style="{StaticResource Style_Button_Path}" Content="{StaticResource Path_Delete}" Command="{Binding DeleteCommand}" />
           </Grid>
         </HierarchicalDataTemplate>
       </TreeView.ItemTemplate>

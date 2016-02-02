@@ -27,6 +27,8 @@ namespace Anvil.Services.Data
         IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchGroup group);
 
         Task RefreshDataAsync();
+
+        Task RemoveLaunchGroupAsync(LaunchGroup group);
     }
 
     public sealed class DataService : IDataService, IInitializableService
@@ -153,6 +155,12 @@ namespace Anvil.Services.Data
                     groupEnvVars.ForEachAsync(mLaunchGroupVariables.Add),
                     itemEnvVars.ForEachAsync(mLaunchItemVariables.Add));
             });
+        }
+
+        public async Task RemoveLaunchGroupAsync(LaunchGroup group)
+        {
+            await mPersistenceService.Remove(group);
+            mLaunchGroups.Remove(group);
         }
     }
 }

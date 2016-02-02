@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <!-- Paths from https://materialdesignicons.com/ -->
   <PathGeometry x:Key="Path_FolderPlus" Figures="M10,4L12,6H20A2,2 0 0,1 22,8V18A2,2 0 0,1 20,20H4C2.89,20 2,19.1 2,18V6C2,4.89 2.89,4 4,4H10M15,9V12H12V14H15V17H17V14H20V12H17V9H15Z" />
+  <PathGeometry x:Key="Path_Delete" Figures="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
 
   <Style x:Key="Style_Button_Path" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
     <Setter Property="Padding" Value="1" />
