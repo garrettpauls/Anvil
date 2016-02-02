@@ -125,7 +125,11 @@
     <Compile Include="Framework\Reactive\ReactiveNotifyPropertyChangedExtensions.cs" />
     <Compile Include="Framework\Reactive\ReactiveFormattableSqlProviderExtensions.cs" />
     <Compile Include="Framework\ResourceExtensions.cs" />
+    <Compile Include="Framework\Xaml\Actions\MoveFocusAction.cs" />
+    <Compile Include="Framework\Xaml\Actions\SelectAllTextAction.cs" />
     <Compile Include="Framework\Xaml\Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Framework\Xaml\Controls\Extensions\TextBoxEx.cs" />
+    <Compile Include="Framework\Xaml\Triggers\KeyGestureTrigger.cs" />
     <Compile Include="Models\EnvironmentVariable.cs" />
     <Compile Include="Models\LaunchGroup.cs" />
     <Compile Include="Models\LaunchItem.cs" />
@@ -211,6 +215,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Services\Data\CreateTables.sql" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\packages\System.Data.SQLite.Core.1.0.99.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\..\packages\System.Data.SQLite.Core.1.0.99.0\build\net46\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
