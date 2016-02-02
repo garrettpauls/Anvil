@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
@@ -33,12 +32,10 @@ namespace Anvil.Services.Data
     public sealed class DataService : IDataService, IInitializableService
     {
         private readonly DisposableTracker mDisposables = new DisposableTracker();
-
-        private readonly ConcurrentDictionary<long, SourceList<EnvironmentVariable>> mLaunchGroupEnvVars =
-            new ConcurrentDictionary<long, SourceList<EnvironmentVariable>>();
-
         private readonly SourceCache<LaunchGroup, long> mLaunchGroups = new SourceCache<LaunchGroup, long>(lg => lg.Key);
+        private readonly SourceList<EnvironmentVariable> mLaunchGroupVariables = new SourceList<EnvironmentVariable>();
         private readonly SourceCache<LaunchItem, long> mLaunchItems = new SourceCache<LaunchItem, long>(li => li.Key);
+        private readonly SourceList<EnvironmentVariable> mLaunchItemVariables = new SourceList<EnvironmentVariable>();
         private readonly IPersistenceService mPersistenceService;
 
         public DataService(IPersistenceService persistenceService)
@@ -47,23 +44,13 @@ namespace Anvil.Services.Data
 
             _TrackPropertyChanges(mLaunchGroups);
             _TrackPropertyChanges(mLaunchItems);
+            _TrackPropertyChanges(mLaunchGroupVariables);
+            _TrackPropertyChanges(mLaunchItemVariables);
         }
 
         public IObservableCache<LaunchGroup, long> LaunchGroups => mLaunchGroups;
 
         public IObservableCache<LaunchItem, long> LaunchItems => mLaunchItems;
-
-        private SourceList<EnvironmentVariable> _GetEnvironmentVariablesFor(LaunchGroup group)
-        {
-            return mLaunchGroupEnvVars.GetOrAdd(group.Id, id =>
-            {
-                var envVars = new SourceList<EnvironmentVariable>();
-
-                //TODO: Load from database
-
-                return envVars;
-            });
-        }
 
         private void _SavePropertyValue<T>(PropertyChangedNotification<T> evt)
         {
@@ -93,6 +80,14 @@ namespace Anvil.Services.Data
                  .Subscribe().TrackWith(mDisposables);
         }
 
+        private void _TrackPropertyChanges<T>(SourceList<T> cache)
+            where T : IReactiveObject
+        {
+            cache.Connect()
+                 .Transform(_TrackPropertyChanges).DisposeMany()
+                 .Subscribe().TrackWith(mDisposables);
+        }
+
         private IDisposable _TrackPropertyChanges<T>(T value)
             where T : IReactiveObject
         {
@@ -101,15 +96,12 @@ namespace Anvil.Services.Data
                 .Subscribe(_SavePropertyValue);
         }
 
-        public Task AddEnvironmentVariable(LaunchGroup group, EnvironmentVariable envVar)
+        public async Task AddEnvironmentVariable(LaunchGroup group, EnvironmentVariable envVar)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                //TODO: Save to database
-
-                var envVars = _GetEnvironmentVariablesFor(group);
-                envVars.Add(envVar);
-            });
+            envVar.ParentId = group.Id;
+            await mPersistenceService.Add(envVar);
+            await mPersistenceService.Assign(envVar, group);
+            mLaunchGroupVariables.Add(envVar);
         }
 
         public Task AddLaunchGroupAsync(LaunchGroup group)
@@ -122,20 +114,18 @@ namespace Anvil.Services.Data
             });
         }
 
-        public Task DeleteEnvironmentVariable(LaunchGroup group, EnvironmentVariable envVar)
+        public async Task DeleteEnvironmentVariable(LaunchGroup group, EnvironmentVariable envVar)
         {
-            return Task.Factory.StartNew(() =>
-            {
-                //TODO: Delete from database
-
-                var envVars = _GetEnvironmentVariablesFor(group);
-                envVars.Remove(envVar);
-            });
+            await mPersistenceService.Remove(envVar);
+            mLaunchGroupVariables.Remove(envVar);
         }
 
         public IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchGroup group)
         {
-            return _GetEnvironmentVariablesFor(group);
+            return mLaunchGroupVariables
+                .Connect()
+                .Filter(envVar => envVar.ParentId == group.Id)
+                .AsObservableList();
         }
 
         public Task InitializeAsync()
@@ -149,13 +139,19 @@ namespace Anvil.Services.Data
             {
                 mLaunchGroups.Clear();
                 mLaunchItems.Clear();
+                mLaunchGroupVariables.Clear();
+                mLaunchItemVariables.Clear();
 
                 var groups = mPersistenceService.GetLaunchGroups();
                 var items = mPersistenceService.GetLaunchItems();
+                var groupEnvVars = mPersistenceService.GetLaunchGroupEnvironmentVariables();
+                var itemEnvVars = mPersistenceService.GetLaunchItemEnvironmentVariables();
 
                 return Task.WhenAll(
                     groups.ForEachAsync(mLaunchGroups.AddOrUpdate),
-                    items.ForEachAsync(mLaunchItems.AddOrUpdate));
+                    items.ForEachAsync(mLaunchItems.AddOrUpdate),
+                    groupEnvVars.ForEachAsync(mLaunchGroupVariables.Add),
+                    itemEnvVars.ForEachAsync(mLaunchItemVariables.Add));
             });
         }
     }

@@ -14,11 +14,23 @@ namespace Anvil.Services.Data
     {
         Task Add(LaunchGroup grp);
 
+        Task Add(EnvironmentVariable envVar);
+
+        Task Assign(EnvironmentVariable envVar, LaunchGroup group);
+
+        Task Assign(EnvironmentVariable envVar, LaunchItem item);
+
+        IObservable<EnvironmentVariable> GetLaunchGroupEnvironmentVariables();
+
         IObservable<LaunchGroup> GetLaunchGroups();
+
+        IObservable<EnvironmentVariable> GetLaunchItemEnvironmentVariables();
 
         IObservable<LaunchItem> GetLaunchItems();
 
         Task Remove(LaunchGroup grp);
+
+        Task Remove(EnvironmentVariable envVar);
 
         Task Save(LaunchGroup grp, string changedPropertyName = null);
 
@@ -41,8 +53,49 @@ namespace Anvil.Services.Data
             return mSql.Run(async sql => grp.Id = await sql.ExecuteScalarAsync<long>($@"
 insert into LaunchGroup (Name      , ParentId)
                  values ({grp.Name}, {grp.ParentGroupId})
-;select last_insert_rowid()
-"));
+;select last_insert_rowid()"));
+        }
+
+        public Task Add(EnvironmentVariable envVar)
+        {
+            return mSql.Run(async sql => envVar.Id = await sql.ExecuteScalarAsync<long>($@"
+insert into EnvironmentVariable (Key         , Value)
+                         values ({envVar.Key}, {envVar.Value})
+;select last_insert_rowid()"));
+        }
+
+        public Task Assign(EnvironmentVariable envVar, LaunchGroup @group)
+        {
+            return mSql.Run(sql => sql.ExecuteAsync($@"
+delete from LaunchGroupVariables where EnvironmentVariableId = {envVar.Id}
+;
+insert into LaunchGroupVariables (LaunchGroupId, EnvironmentVariableId)
+                          values ({group.Id}   , {envVar.Id})"));
+        }
+
+        public Task Assign(EnvironmentVariable envVar, LaunchItem item)
+        {
+            return mSql.Run(sql => sql.ExecuteAsync($@"
+delete from LaunchItemVariables where EnvironmentVariableId = {envVar.Id}
+;
+insert into LaunchItemVariables (LaunchItemId, EnvironmentVariableId)
+                         values ({item.Id}   , {envVar.Id})"));
+        }
+
+        public IObservable<EnvironmentVariable> GetLaunchGroupEnvironmentVariables()
+        {
+            return mSql.Run(sql => sql.RxQueryAsync($@"
+select env.Id as EnvVarId, lgv.LaunchGroupId, env.Key, env.Value
+  from LaunchGroupVariables lgv
+  join EnvironmentVariable env on lgv.EnvironmentVariableId = env.Id
+",
+                                                    async row => new EnvironmentVariable
+                                                    {
+                                                        Id = await row.GetValueAsync<long>("EnvVarId"),
+                                                        Key = await row.GetValueAsync<string>("Key"),
+                                                        Value = await row.GetValueAsync<string>("Value"),
+                                                        ParentId = await row.GetValueAsync<long>("LaunchGroupId")
+                                                    }));
         }
 
         public IObservable<LaunchGroup> GetLaunchGroups()
@@ -55,6 +108,22 @@ insert into LaunchGroup (Name      , ParentId)
                     ParentGroupId = await row.GetValueAsync<long?>("ParentId"),
                     Name = await row.GetValueAsync<string>("Name")
                 }));
+        }
+
+        public IObservable<EnvironmentVariable> GetLaunchItemEnvironmentVariables()
+        {
+            return mSql.Run(sql => sql.RxQueryAsync($@"
+select env.Id as EnvVarId, liv.LaunchItemId, env.Key, env.Value
+  from LaunchItemVariables liv
+  join EnvironmentVariable env on liv.EnvironmentVariableId = env.Id
+",
+                                                    async row => new EnvironmentVariable
+                                                    {
+                                                        Id = await row.GetValueAsync<long>("EnvVarId"),
+                                                        Key = await row.GetValueAsync<string>("Key"),
+                                                        Value = await row.GetValueAsync<string>("Value"),
+                                                        ParentId = await row.GetValueAsync<long>("LaunchItemId")
+                                                    }));
         }
 
         public IObservable<LaunchItem> GetLaunchItems()
@@ -96,7 +165,12 @@ insert into LaunchGroup (Name      , ParentId)
 
         public Task Remove(LaunchGroup grp)
         {
-            throw new NotImplementedException();
+            return mSql.Run(sql => sql.ExecuteAsync($"delete from LaunchGroup where Id = {grp.Id}"));
+        }
+
+        public Task Remove(EnvironmentVariable envVar)
+        {
+            return mSql.Run(sql => sql.ExecuteAsync($"delete from EnvironmentVariable where Id = {envVar.Id}"));
         }
 
         public Task Save(LaunchGroup grp, string changedPropertyName = null)
