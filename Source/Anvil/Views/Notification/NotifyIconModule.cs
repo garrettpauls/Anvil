@@ -6,6 +6,8 @@ using Anvil.Properties;
 
 using Autofac;
 
+using Squirrel;
+
 using Application = System.Windows.Application;
 
 namespace Anvil.Views.Notification
@@ -14,10 +16,12 @@ namespace Anvil.Views.Notification
     {
         private readonly DisposableTracker mDisposables = new DisposableTracker();
         private readonly NotifyIcon mIcon;
+        private readonly UpdateProcessor mUpdateProcessor;
 
-        public NotifyIconManager()
+        public NotifyIconManager(IUpdateManager updateManager)
         {
             mIcon = new NotifyIcon();
+            mUpdateProcessor = new UpdateProcessor(updateManager);
         }
 
         public void Dispose()
@@ -34,6 +38,7 @@ namespace Anvil.Views.Notification
             mIcon.ContextMenu = new ContextMenu(new[]
             {
                 new MenuItem("&Open", _OpenMainWindow),
+                mUpdateProcessor.MenuItem,
                 new MenuItem("-"),
                 new MenuItem("E&xit", _Exit)
             });
