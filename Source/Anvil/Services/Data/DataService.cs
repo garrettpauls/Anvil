@@ -20,13 +20,19 @@ namespace Anvil.Services.Data
 
         Task AddEnvironmentVariable(LaunchGroup group, EnvironmentVariable envVar);
 
+        Task AddEnvironmentVariable(LaunchItem item, EnvironmentVariable envVar);
+
         Task AddLaunchGroupAsync(LaunchGroup group);
 
         Task AddLaunchItemAsync(LaunchItem launchItem);
 
         Task DeleteEnvironmentVariable(LaunchGroup group, EnvironmentVariable envVar);
 
+        Task DeleteEnvironmentVariable(LaunchItem item, EnvironmentVariable envVar);
+
         IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchGroup group);
+
+        IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchItem item);
 
         Task RefreshDataAsync();
 
@@ -110,6 +116,14 @@ namespace Anvil.Services.Data
             mLaunchGroupVariables.Add(envVar);
         }
 
+        public async Task AddEnvironmentVariable(LaunchItem item, EnvironmentVariable envVar)
+        {
+            envVar.ParentId = item.Id;
+            await mPersistenceService.Add(envVar);
+            await mPersistenceService.Assign(envVar, item);
+            mLaunchItemVariables.Add(envVar);
+        }
+
         public Task AddLaunchGroupAsync(LaunchGroup group)
         {
             return Task.Factory.StartNew(() =>
@@ -136,11 +150,25 @@ namespace Anvil.Services.Data
             mLaunchGroupVariables.Remove(envVar);
         }
 
+        public async Task DeleteEnvironmentVariable(LaunchItem item, EnvironmentVariable envVar)
+        {
+            await mPersistenceService.Remove(envVar);
+            mLaunchItemVariables.Remove(envVar);
+        }
+
         public IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchGroup group)
         {
             return mLaunchGroupVariables
                 .Connect()
                 .Filter(envVar => envVar.ParentId == group.Id)
+                .AsObservableList();
+        }
+
+        public IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchItem item)
+        {
+            return mLaunchItemVariables
+                .Connect()
+                .Filter(envVar => envVar.ParentId == item.Id)
                 .AsObservableList();
         }
 

@@ -187,7 +187,7 @@ namespace Anvil.Views.ConfigurationUI
 
         private void _EditLauncher(LaunchItem item)
         {
-            mHostScreen.Router.Navigate.Execute(new LaunchItemEditViewModel(item, mHostScreen));
+            mHostScreen.Router.Navigate.Execute(new LaunchItemEditViewModel(item, mDataService, mHostScreen));
         }
     }
 }

@@ -5,13 +5,34 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:local="clr-namespace:Anvil.Views.ConfigurationUI"
+  xmlns:controls="clr-namespace:Anvil.Controls"
   mc:Ignorable="d" d:DataContext="{d:DesignInstance local:LaunchItemEditViewModel}"
   d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-      <Button>
-        
-      </Button>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <HeaderedContentControl Grid.Row="0" Header="Name">
+      <TextBox Text="{Binding Model.Name}" />
+    </HeaderedContentControl>
+    <HeaderedContentControl Grid.Row="1" Header="File">
+      <TextBox Text="{Binding Model.Path}" />
+    </HeaderedContentControl>
+    <HeaderedContentControl Grid.Row="2" Header="Working Directory">
+      <TextBox Text="{Binding Model.WorkingDirectory}" />
+
+    </HeaderedContentControl>
+    <HeaderedContentControl Grid.Row="3" Header="Environment" VerticalContentAlignment="Stretch">
+      <local:EnvironmentEditView DataContext="{Binding Environment}" Focusable="False" />
+    </HeaderedContentControl>
+
+    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+      <controls:GeometryButton Geometry="{StaticResource Path_Launch}" Content="Launch" Command="{Binding LaunchCommand}" />
       <Button Content="Done" Command="{Binding HostScreen.Router.NavigateBack}" />
     </StackPanel>
   </Grid>
