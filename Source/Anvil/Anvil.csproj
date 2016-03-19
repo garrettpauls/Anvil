@@ -127,6 +127,7 @@
     <Compile Include="Framework\ComponentModel\DisposableTracker.cs" />
     <Compile Include="Framework\FileFilterBuilder.cs" />
     <Compile Include="Framework\Guard.cs" />
+    <Compile Include="Framework\IO\DirectoryEx.cs" />
     <Compile Include="Framework\MVVM\DisposableViewModel.cs" />
     <Compile Include="Framework\MVVM\RoutableViewModel.cs" />
     <Compile Include="Framework\MVVM\View.cs" />
@@ -141,18 +142,21 @@
     <Compile Include="Framework\Xaml\Converters\TextToUpperCaseConverter.cs" />
     <Compile Include="Framework\Xaml\Triggers\KeyGestureTrigger.cs" />
     <Compile Include="Models\EnvironmentVariable.cs" />
+    <Compile Include="Models\EnvironmentVariableSet.cs" />
     <Compile Include="Models\LaunchGroup.cs" />
     <Compile Include="Models\LaunchItem.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Services\Data\DataService.cs" />
     <Compile Include="Services\Data\PersistenceService.cs" />
     <Compile Include="Services\Data\SqlService.cs" />
+    <Compile Include="Services\LaunchService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\ServiceModule.cs" />
     <Compile Include="Views\ConfigurationUI\EnvironmentEditView.xaml.cs">
       <DependentUpon>EnvironmentEditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigurationUI\EnvironmentEditViewModel.cs" />
+    <Compile Include="Views\ConfigurationUI\LaunchGroupTreeNode.cs" />
     <Compile Include="Views\ConfigurationUI\LaunchItemEditView.xaml.cs">
       <DependentUpon>LaunchItemEditView.xaml</DependentUpon>
     </Compile>

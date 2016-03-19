@@ -6,11 +6,18 @@ namespace Anvil.Models
 {
     public sealed class LaunchItem : Model, IKey<long>
     {
+        private string mArguments = "";
         private long mId;
         private string mName = "";
         private long mParentGroupId;
         private string mPath = "";
         private string mWorkingDirectory = "";
+
+        public string Arguments
+        {
+            get { return mArguments; }
+            set { this.RaiseAndSetIfChanged(ref mArguments, value); }
+        }
 
         public long Id
         {

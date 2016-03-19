@@ -79,6 +79,7 @@
                   </Grid.ColumnDefinitions>
                   <TextBlock Text="{Binding Name}" />
                   <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Style="{StaticResource Style_Button_Path}" Content="{StaticResource Path_Launch}" Command="{Binding ElementName=LaunchItemList, Path=DataContext.LaunchCommand}" CommandParameter="{Binding}" />
                     <Button Style="{StaticResource Style_Button_Path}" Content="{StaticResource Path_Edit}" Command="{Binding ElementName=LaunchItemList, Path=DataContext.EditLauncherCommand}" CommandParameter="{Binding}" />
                     <Button Style="{StaticResource Style_Button_Path}" Content="{StaticResource Path_Delete}" Command="{Binding ElementName=LaunchItemList, Path=DataContext.DeleteLauncherCommand}" CommandParameter="{Binding}" />
                   </StackPanel>

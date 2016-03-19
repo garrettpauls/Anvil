@@ -7,7 +7,7 @@ using System.Windows.Media;
 namespace Anvil.Controls
 {
     [ContentProperty(nameof(Content))]
-    public class GeometryButton : ContentControl
+    public sealed class GeometryButton : ContentControl
     {
         public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
             "CommandParameter", typeof(object), typeof(GeometryButton), new PropertyMetadata(default(object)));

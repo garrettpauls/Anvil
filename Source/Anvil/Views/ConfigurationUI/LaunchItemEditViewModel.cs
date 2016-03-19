@@ -3,6 +3,7 @@
 using Anvil.Framework.ComponentModel;
 using Anvil.Framework.MVVM;
 using Anvil.Models;
+using Anvil.Services;
 using Anvil.Services.Data;
 
 using ReactiveUI;
@@ -11,10 +12,13 @@ namespace Anvil.Views.ConfigurationUI
 {
     public sealed class LaunchItemEditViewModel : RoutableViewModel
     {
-        public LaunchItemEditViewModel(LaunchItem model, IDataService dataService, IScreen hostScreen)
+        private readonly ILaunchService mLaunchService;
+
+        public LaunchItemEditViewModel(LaunchItem model, IDataService dataService, ILaunchService launchService, IScreen hostScreen)
             : base($"launchItem/edit/{model.Id}", hostScreen)
         {
             Model = model;
+            mLaunchService = launchService;
 
             LaunchCommand = ReactiveCommand.Create();
             LaunchCommand.Subscribe(_Launch).TrackWith(Disposables);
@@ -33,7 +37,7 @@ namespace Anvil.Views.ConfigurationUI
 
         private void _Launch(object _)
         {
-            throw new NotImplementedException();
+            mLaunchService.Launch(Model);
         }
     }
 }

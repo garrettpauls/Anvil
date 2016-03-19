@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
@@ -33,6 +34,10 @@ namespace Anvil.Services.Data
         IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchGroup group);
 
         IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchItem item);
+
+        EnvironmentVariable[] GetEnvironmentVariableSnapshotFor(LaunchGroup group);
+
+        EnvironmentVariable[] GetEnvironmentVariableSnapshotFor(LaunchItem item);
 
         Task RefreshDataAsync();
 
@@ -170,6 +175,22 @@ namespace Anvil.Services.Data
                 .Connect()
                 .Filter(envVar => envVar.ParentId == item.Id)
                 .AsObservableList();
+        }
+
+        public EnvironmentVariable[] GetEnvironmentVariableSnapshotFor(LaunchGroup group)
+        {
+            return mLaunchGroupVariables
+                .Items
+                .Where(envVar => envVar.ParentId == group.Id)
+                .ToArray();
+        }
+
+        public EnvironmentVariable[] GetEnvironmentVariableSnapshotFor(LaunchItem item)
+        {
+            return mLaunchItemVariables
+                .Items
+                .Where(envVar => envVar.ParentId == item.Id)
+                .ToArray();
         }
 
         public Task InitializeAsync()
