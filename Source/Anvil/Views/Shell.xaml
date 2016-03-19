@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Anvil.Views"
+        xmlns:properties="clr-namespace:Anvil.Properties"
         xmlns:reactiveUi="clr-namespace:ReactiveUI;assembly=ReactiveUI"
         mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ShellViewModel}"
         Title="Anvil" Height="600" Width="800" MinHeight="400" MinWidth="400"
-        Icon="../Properties/launch.ico">
+        Icon="../Properties/Anvil.ico" Closing="_HandleClosing">
   <Grid>
     <reactiveUi:RoutedViewHost Router="{Binding Router}" IsTabStop="False" />
   </Grid>

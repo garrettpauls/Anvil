@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 
 using Anvil.Views.ConfigurationUI;
@@ -32,6 +33,12 @@ namespace Anvil.Views
         {
             get { return (ShellViewModel) GetValue(ViewModelProperty); }
             set { SetValue(ViewModelProperty, value); }
+        }
+
+        private void _HandleClosing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Hide();
         }
     }
 }

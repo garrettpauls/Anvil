@@ -1,7 +1,8 @@
 ﻿<Application x:Class="Anvil.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Anvil">
+             xmlns:local="clr-namespace:Anvil"
+             ShutdownMode="OnExplicitShutdown">
   <Application.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>

@@ -1,4 +1,5 @@
 ﻿using Anvil.Framework.MVVM;
+using Anvil.Views.Notification;
 
 using Autofac;
 
@@ -37,6 +38,10 @@ namespace Anvil.Views
             builder.RegisterType<RoutingState>()
                    .AsSelf()
                    .InstancePerLifetimeScope();
+
+            builder.RegisterType<NotifyIconManager>()
+                   .AsImplementedInterfaces()
+                   .SingleInstance();
         }
     }
 }
