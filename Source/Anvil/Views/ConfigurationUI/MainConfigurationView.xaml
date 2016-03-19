@@ -7,6 +7,7 @@
   xmlns:local="clr-namespace:Anvil.Views.ConfigurationUI"
   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
   xmlns:behaviors="clr-namespace:Anvil.Framework.Xaml.Behaviors"
+  xmlns:models="clr-namespace:Anvil.Models"
   mc:Ignorable="d" d:DataContext="{d:DesignInstance local:MainConfigurationViewModel}"
   d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
@@ -45,10 +46,10 @@
       </TreeView.ItemContainerStyle>
     </TreeView>
 
-    <Button Grid.Column="0" Grid.Row="1" Margin="4 0 4 4">
+    <Button Grid.Column="0" Grid.Row="1" Margin="4 0 4 4" Command="{Binding AddGroupCommand}">
       <StackPanel Orientation="Horizontal">
         <Path Data="{StaticResource Path_FolderPlus}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-              Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
+              Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" />
         <TextBlock Text="New Launch Group" />
       </StackPanel>
     </Button>
@@ -57,6 +58,8 @@
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
         <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
       <StackPanel Orientation="Vertical">
         <HeaderedContentControl Header="Name">
@@ -67,7 +70,36 @@
       <HeaderedContentControl Grid.Row="1" Header="Environment" VerticalContentAlignment="Stretch">
         <local:EnvironmentEditView DataContext="{Binding Environment}" Focusable="False" />
       </HeaderedContentControl>
+
+      <HeaderedContentControl Grid.Row="2" Header="Launchers" VerticalContentAlignment="Stretch">
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+          <ItemsControl ItemsSource="{Binding ChildItems}" Grid.IsSharedSizeScope="True" x:Name="LaunchItemList">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition SharedSizeGroup="Buttons" />
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Text="{Binding Name}" />
+                  <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Style="{StaticResource Style_Button_Path}" Content="{StaticResource Path_Edit}" Command="{Binding ElementName=LaunchItemList, Path=DataContext.EditLauncherCommand}" CommandParameter="{Binding}" />
+                    <Button Style="{StaticResource Style_Button_Path}" Content="{StaticResource Path_Delete}" Command="{Binding ElementName=LaunchItemList, Path=DataContext.DeleteLauncherCommand}" CommandParameter="{Binding}" />
+                  </StackPanel>
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </HeaderedContentControl>
     </Grid>
 
+    <Button Grid.Column="1" Grid.Row="1" Margin="4 0 4 4" Command="{Binding SelectedGroup.AddLauncherCommand}">
+      <StackPanel Orientation="Horizontal">
+        <Path Data="{StaticResource Path_FilePlus}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+              Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" />
+        <TextBlock Text="New Launcher" />
+      </StackPanel>
+    </Button>
   </Grid>
 </local:MainConfigurationViewImpl>

@@ -144,6 +144,10 @@
       <DependentUpon>EnvironmentEditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigurationUI\EnvironmentEditViewModel.cs" />
+    <Compile Include="Views\ConfigurationUI\LaunchItemEditView.xaml.cs">
+      <DependentUpon>LaunchItemEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigurationUI\LaunchItemEditViewModel.cs" />
     <Compile Include="Views\ConfigurationUI\MainConfigurationView.xaml.cs">
       <DependentUpon>MainConfigurationView.xaml</DependentUpon>
     </Compile>
@@ -171,6 +175,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigurationUI\EnvironmentEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigurationUI\LaunchItemEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,10 +7,10 @@ namespace Anvil.Models
     public sealed class LaunchItem : Model, IKey<long>
     {
         private long mId;
-        private string mName;
+        private string mName = "";
         private long mParentGroupId;
-        private string mPath;
-        private string mWorkingDirectory;
+        private string mPath = "";
+        private string mWorkingDirectory = "";
 
         public long Id
         {

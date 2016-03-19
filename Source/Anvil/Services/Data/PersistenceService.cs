@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -15,6 +14,8 @@ namespace Anvil.Services.Data
         Task Add(LaunchGroup grp);
 
         Task Add(EnvironmentVariable envVar);
+
+        Task Add(LaunchItem item);
 
         Task Assign(EnvironmentVariable envVar, LaunchGroup group);
 
@@ -31,6 +32,8 @@ namespace Anvil.Services.Data
         Task Remove(LaunchGroup grp);
 
         Task Remove(EnvironmentVariable envVar);
+
+        Task Remove(LaunchItem item);
 
         Task Save(LaunchGroup grp, string changedPropertyName = null);
 
@@ -61,6 +64,14 @@ insert into LaunchGroup (Name      , ParentId)
             return mSql.Run(async sql => envVar.Id = await sql.ExecuteScalarAsync<long>($@"
 insert into EnvironmentVariable (Key         , Value)
                          values ({envVar.Key}, {envVar.Value})
+;select last_insert_rowid()"));
+        }
+
+        public Task Add(LaunchItem item)
+        {
+            return mSql.Run(async sql => item.Id = await sql.ExecuteScalarAsync<long>($@"
+insert into LaunchItem (Name       , Path       , WorkingDirectory       , ParentId)
+                values ({item.Name}, {item.Path}, {item.WorkingDirectory}, {item.ParentGroupId})
 ;select last_insert_rowid()"));
         }
 
@@ -128,9 +139,7 @@ select env.Id as EnvVarId, liv.LaunchItemId, env.Key, env.Value
 
         public IObservable<LaunchItem> GetLaunchItems()
         {
-            var subject = new Subject<LaunchItem>();
-
-            mSql.Run(sql => sql.RxQueryAsync(
+            return mSql.Run(sql => sql.RxQueryAsync(
                 $"SELECT Id, ParentId, Name, Path, WorkingDirectory FROM LaunchItem",
                 async row => new LaunchItem
                 {
@@ -140,8 +149,6 @@ select env.Id as EnvVarId, liv.LaunchItemId, env.Key, env.Value
                     Path = await row.GetValueAsync<string>("Path"),
                     WorkingDirectory = await row.GetValueAsync<string>("WorkingDirectory")
                 }));
-
-            return subject;
         }
 
         public async Task InitializeAsync()
@@ -171,6 +178,11 @@ select env.Id as EnvVarId, liv.LaunchItemId, env.Key, env.Value
         public Task Remove(EnvironmentVariable envVar)
         {
             return mSql.Run(sql => sql.ExecuteAsync($"delete from EnvironmentVariable where Id = {envVar.Id}"));
+        }
+
+        public Task Remove(LaunchItem item)
+        {
+            return mSql.Run(sql => sql.ExecuteAsync($"delete from LaunchItem where Id = {item.Id}"));
         }
 
         public Task Save(LaunchGroup grp, string changedPropertyName = null)

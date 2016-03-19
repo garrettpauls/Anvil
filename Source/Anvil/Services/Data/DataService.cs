@@ -22,6 +22,8 @@ namespace Anvil.Services.Data
 
         Task AddLaunchGroupAsync(LaunchGroup group);
 
+        Task AddLaunchItemAsync(LaunchItem launchItem);
+
         Task DeleteEnvironmentVariable(LaunchGroup group, EnvironmentVariable envVar);
 
         IObservableList<EnvironmentVariable> GetEnvironmentVariablesFor(LaunchGroup group);
@@ -29,6 +31,8 @@ namespace Anvil.Services.Data
         Task RefreshDataAsync();
 
         Task RemoveLaunchGroupAsync(LaunchGroup group);
+
+        Task RemoveLaunchItemAsync(LaunchItem item);
     }
 
     public sealed class DataService : IDataService, IInitializableService
@@ -116,6 +120,16 @@ namespace Anvil.Services.Data
             });
         }
 
+        public Task AddLaunchItemAsync(LaunchItem launchItem)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                mPersistenceService.Add(launchItem);
+
+                mLaunchItems.AddOrUpdate(launchItem);
+            });
+        }
+
         public async Task DeleteEnvironmentVariable(LaunchGroup group, EnvironmentVariable envVar)
         {
             await mPersistenceService.Remove(envVar);
@@ -161,6 +175,12 @@ namespace Anvil.Services.Data
         {
             await mPersistenceService.Remove(group);
             mLaunchGroups.Remove(group);
+        }
+
+        public async Task RemoveLaunchItemAsync(LaunchItem item)
+        {
+            await mPersistenceService.Remove(item);
+            mLaunchItems.Remove(item);
         }
     }
 }
