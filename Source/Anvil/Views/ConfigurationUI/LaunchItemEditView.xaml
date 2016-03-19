@@ -21,11 +21,26 @@
       <TextBox Text="{Binding Model.Name}" />
     </HeaderedContentControl>
     <HeaderedContentControl Grid.Row="1" Header="File">
-      <TextBox Text="{Binding Model.Path}" />
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Grid.Column="0" Text="{Binding Model.Path}" x:Name="FileTextBox" />
+        <Button Grid.Column="1" Content="..." Click="_LookupFile" Padding="4 0" />
+      </Grid>
     </HeaderedContentControl>
     <HeaderedContentControl Grid.Row="2" Header="Working Directory">
-      <TextBox Text="{Binding Model.WorkingDirectory}" />
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
 
+        <TextBox Grid.Column="0" Text="{Binding Model.WorkingDirectory}" x:Name="WorkingDirectoryTextBox" />
+        <Button Grid.Column="1" Content="..." Click="_LookupWorkingDirectory" Padding="4 0" />
+      </Grid>
     </HeaderedContentControl>
     <HeaderedContentControl Grid.Row="3" Header="Environment" VerticalContentAlignment="Stretch">
       <local:EnvironmentEditView DataContext="{Binding Environment}" Focusable="False" />

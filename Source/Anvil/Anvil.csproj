@@ -71,6 +71,10 @@
       <HintPath>..\..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0c15020868fd6249, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ookii.Dialogs.1.0\lib\net35\Ookii.Dialogs.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ReactiveUI, Version=6.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\reactiveui-core.6.5.0\lib\Net45\ReactiveUI.dll</HintPath>
       <Private>True</Private>
@@ -121,6 +125,7 @@
     <Compile Include="Framework\AggregateExceptionExtensions.cs" />
     <Compile Include="Framework\AutofacDependencyResolver.cs" />
     <Compile Include="Framework\ComponentModel\DisposableTracker.cs" />
+    <Compile Include="Framework\FileFilterBuilder.cs" />
     <Compile Include="Framework\Guard.cs" />
     <Compile Include="Framework\MVVM\DisposableViewModel.cs" />
     <Compile Include="Framework\MVVM\RoutableViewModel.cs" />
