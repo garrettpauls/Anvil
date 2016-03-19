@@ -8,6 +8,7 @@
   xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
   xmlns:behaviors="clr-namespace:Anvil.Framework.Xaml.Behaviors"
   xmlns:models="clr-namespace:Anvil.Models"
+  xmlns:controls="clr-namespace:Anvil.Controls"
   mc:Ignorable="d" d:DataContext="{d:DesignInstance local:MainConfigurationViewModel}"
   d:DesignHeight="300" d:DesignWidth="300">
   <Grid>
@@ -46,13 +47,8 @@
       </TreeView.ItemContainerStyle>
     </TreeView>
 
-    <Button Grid.Column="0" Grid.Row="1" Margin="4 0 4 4" Command="{Binding AddGroupCommand}">
-      <StackPanel Orientation="Horizontal">
-        <Path Data="{StaticResource Path_FolderPlus}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-              Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" />
-        <TextBlock Text="New Launch Group" />
-      </StackPanel>
-    </Button>
+    <controls:GeometryButton Grid.Column="0" Grid.Row="1" Margin="4 0 4 4" Command="{Binding AddGroupCommand}"
+                             Geometry="{StaticResource Path_FolderPlus}" Content="New Launch Group" />
 
     <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" DataContext="{Binding SelectedGroup}" Margin="0 0 -4 -4">
       <Grid.RowDefinitions>
@@ -94,12 +90,7 @@
       </HeaderedContentControl>
     </Grid>
 
-    <Button Grid.Column="1" Grid.Row="1" Margin="4 0 4 4" Command="{Binding SelectedGroup.AddLauncherCommand}">
-      <StackPanel Orientation="Horizontal">
-        <Path Data="{StaticResource Path_FilePlus}" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-              Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" />
-        <TextBlock Text="New Launcher" />
-      </StackPanel>
-    </Button>
+    <controls:GeometryButton Grid.Column="1" Grid.Row="1" Margin="4 0 4 4" Command="{Binding SelectedGroup.AddLauncherCommand}"
+                             Geometry="{StaticResource Path_FilePlus}" Content="New Launcher" />
   </Grid>
 </local:MainConfigurationViewImpl>

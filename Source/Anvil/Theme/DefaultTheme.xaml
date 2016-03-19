@@ -3,6 +3,7 @@
                     xmlns:extensions="clr-namespace:Anvil.Framework.Xaml.Controls.Extensions">
   <ResourceDictionary.MergedDictionaries>
     <ResourceDictionary Source="Images.xaml" />
+    <ResourceDictionary Source="GeometryButton.xaml" />
   </ResourceDictionary.MergedDictionaries>
 
   <Style TargetType="HeaderedContentControl">
