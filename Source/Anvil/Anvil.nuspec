@@ -2,13 +2,17 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Anvil</id>
-    <version>0.0.0.2</version>
+    <version>0.0.1.0</version>
     <title>Anvil</title>
     <authors>Garrett Pauls</authors>
     <licenseUrl>https://raw.githubusercontent.com/garrettpauls/Anvil/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/garrettpauls/Anvil/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A program launcher with configurable environment variables.</description>
+    <releaseNotes># v0.0.1.0
+
+This is a pre-release version with incomplete functionality.
+</releaseNotes>
   </metadata>
   <files>
     <file src="bin\Release\Anvil.exe" target="lib\net45\Anvil.exe" />
