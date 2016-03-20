@@ -58,11 +58,6 @@ namespace Anvil.Views.Notification
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void _RestartApplication()
-        {
-            UpdateManager.RestartApp();
-        }
-
         private void _UpdateApplication()
         {
             mIsProcessing = true;
@@ -74,8 +69,8 @@ namespace Anvil.Views.Notification
                 .UpdateApp()
                 .ContinueWith(task =>
                 {
-                    MenuItem.Text = "Restart to complete update";
-                    MenuItem.Enabled = true;
+                    MenuItem.Text = "Restart Anvil to complete update";
+                    MenuItem.Enabled = false;
 
                     mUpdateStatus = UpdateStatus.UpdatePending;
                     mIsProcessing = false;
@@ -104,7 +99,6 @@ namespace Anvil.Views.Notification
                 case UpdateStatus.Updating:
                     break;
                 case UpdateStatus.UpdatePending:
-                    _RestartApplication();
                     break;
             }
         }
