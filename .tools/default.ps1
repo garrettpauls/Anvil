@@ -2,22 +2,25 @@ Framework 4.6.1
 
 properties {
     $nuget   = Join-Path $psake.build_script_dir 'nuget.exe'
-    $sln     = Resolve-Path (Join-Path $psake.build_script_dir '../Anvil.sln')
-    $pkgDir  = Resolve-Path (Join-Path $psake.build_script_dir '../packages')
+    $rootDir = Resolve-Path (Join-Path $psake.build_script_dir '..')
+    $sln     = Join-Path $rootDir 'Anvil.sln'
+    $nuspec  = Join-Path $rootDir 'Source/Anvil/Anvil.nuspec'
+    $pkgDir  = Join-Path $rootDir 'packages'
     $msbuild = 'C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe'
+    $temp    = $env:temp
+    $releaseDir = Join-Path $rootDir 'Releases'
+}
+
+function Get-Version {
+    $assemblyInfo = Get-Content "$rootDir/Source/Anvil/Properties/AssemblyInfo.cs"
+    return ([regex]'AssemblyVersion\("([^"]+)"\)').match($assemblyInfo).groups[1].value
 }
 
 task default `
      -depends Compile
 
 task Publish `
-     -depends NugetRestore, Clean, Compile `
-{
-    $squirrelDir = Join-Path $pkgDir (Get-ChildItem $pkgDir -Filter squirrel.windows.* -Name | Sort-Object -Descending | Select-Object -First 1)
-    $squirrel    = Join-Path $squirrelDir 'tools/Squirrel.exe'
-
-    Write-Output "TODO: build squirrel files with $squirrel"
-}
+     -depends NugetRestore, Clean, Compile, PackageNuspec, SquirrelReleasify
 
 task Compile `
      -alias Build `
@@ -37,4 +40,30 @@ task NugetRestore `
      -description 'Restores nuget packages' `
 {
     Exec { &"$nuget" restore "$sln" }
+}
+
+task PackageNuspec `
+     -depends Compile, UpdateNuspecVersion `
+{
+    Exec { &"$nuget" pack "$nuspec" -outputDirectory $temp }
+}
+
+task UpdateNuspecVersion `
+{
+    $version = Get-Version
+    [xml]$xml = Get-Content "$nuspec"
+    $xml.package.metadata.version = $version
+    $xml.Save($nuspec)
+}
+
+task SquirrelReleasify `
+     -depends PackageNuspec `
+{
+    $version = Get-Version
+    $target = Join-Path $temp "Anvil.$version.nupkg"
+    
+    $squirrelDir = Join-Path $pkgDir (Get-ChildItem $pkgDir -Filter squirrel.windows.* -Name | Sort-Object -Descending | Select-Object -First 1)
+    $squirrel    = Join-Path $squirrelDir 'tools/Squirrel.com'
+
+    Exec { &"$squirrel" --releasify "$target" --releaseDir "$releaseDir" }
 }
