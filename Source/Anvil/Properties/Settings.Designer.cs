@@ -25,7 +25,7 @@ namespace Anvil.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool IncludePreRelease {
             get {
                 return ((bool)(this["IncludePreRelease"]));

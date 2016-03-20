@@ -5,6 +5,7 @@ using Anvil.Framework.ComponentModel;
 using Anvil.Properties;
 
 using Autofac;
+using Autofac.Extras.NLog;
 
 using Squirrel;
 
@@ -16,12 +17,23 @@ namespace Anvil.Views.Notification
     {
         private readonly DisposableTracker mDisposables = new DisposableTracker();
         private readonly NotifyIcon mIcon;
+        private readonly ILogger mLog;
         private readonly UpdateProcessor mUpdateProcessor;
 
-        public NotifyIconManager(IUpdateManager updateManager)
+        public NotifyIconManager(Func<IUpdateManager> updateManager, ILogger log)
         {
+            mLog = log;
             mIcon = new NotifyIcon();
-            mUpdateProcessor = new UpdateProcessor(updateManager);
+
+            try
+            {
+                mUpdateProcessor = new UpdateProcessor(updateManager());
+            }
+            catch(Exception ex)
+            {
+                log.Error("Failed to initialize update manager.", ex);
+                mUpdateProcessor = new UpdateProcessor();
+            }
         }
 
         public void Dispose()

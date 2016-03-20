@@ -19,6 +19,12 @@ namespace Anvil.Views.Notification
             MenuItem = new MenuItem("&Check for updates...", _UpdateClicked);
         }
 
+        public UpdateProcessor()
+        {
+            MenuItem = new MenuItem("Automatic updates not available");
+            MenuItem.Enabled = false;
+        }
+
         public MenuItem MenuItem { get; }
 
         private void _CheckForUpdates()

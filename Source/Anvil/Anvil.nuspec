@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Anvil</id>
-    <version>0.0.0.0</version>
+    <version>0.0.0.1</version>
     <title>Anvil</title>
     <authors>Garrett Pauls</authors>
     <licenseUrl>https://raw.githubusercontent.com/garrettpauls/Anvil/master/License.txt</licenseUrl>

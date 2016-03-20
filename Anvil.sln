@@ -8,13 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{2B2FBD77-BE35-4A9D-A129-C1B0BFA70305}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Source\Anvil\Anvil.nuspec = Source\Anvil\Anvil.nuspec
 		License.txt = License.txt
 		readme.md = readme.md
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6027B795-D20F-42BE-BCB0-848A5F419084}"
-	ProjectSection(SolutionItems) = preProject
-		Source\Anvil\Anvil.nuspec = Source\Anvil\Anvil.nuspec
 	EndProjectSection
 EndProject
 Global

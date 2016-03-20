@@ -11,7 +11,7 @@ namespace Anvil.Services
 
     public sealed class ConfigurationService : IConfigurationService
     {
-        private const string DEFAULT_UPDATE_URL = "https://github.com/garrettpauls/Anvil/";
+        private const string DEFAULT_UPDATE_URL = "https://github.com/garrettpauls/Anvil";
         private readonly Settings mSettings;
 
         public ConfigurationService()
