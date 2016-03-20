@@ -43,16 +43,23 @@ task NugetRestore `
 }
 
 task PackageNuspec `
-     -depends Compile, UpdateNuspecVersion `
+     -depends Compile, UpdateNuspec `
 {
     Exec { &"$nuget" pack "$nuspec" -outputDirectory $temp }
 }
 
-task UpdateNuspecVersion `
+task UpdateNuspec `
 {
-    $version = Get-Version
     [xml]$xml = Get-Content "$nuspec"
+
+    # Update version
+    $version = Get-Version
     $xml.package.metadata.version = $version
+
+    # Update release notes
+    $releaseNotes = [System.IO.File]::ReadAllText((Join-Path $rootDir 'release-notes.md'))
+    $xml.package.metadata.releaseNotes = $releaseNotes
+
     $xml.Save($nuspec)
 }
 
