@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{2B2FBD77-BE35-4A
 		Source\Anvil\Anvil.nuspec = Source\Anvil\Anvil.nuspec
 		License.txt = License.txt
 		readme.md = readme.md
+		release-notes.md = release-notes.md
 	EndProjectSection
 EndProject
 Global
