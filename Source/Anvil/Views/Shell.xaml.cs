@@ -4,11 +4,13 @@ using System.Windows;
 
 using Anvil.Views.ConfigurationUI;
 
+using MahApps.Metro.Controls;
+
 using ReactiveUI;
 
 namespace Anvil.Views
 {
-    public partial class Shell : Window, IViewFor<ShellViewModel>
+    public partial class Shell : MetroWindow, IViewFor<ShellViewModel>
     {
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(ShellViewModel), typeof(Shell), new PropertyMetadata(default(ShellViewModel)));

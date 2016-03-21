@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:theme="clr-namespace:Anvil.Theme">
+
+  <theme:AeroColorProvider x:Key="AeroColorProvider" />
+
+  <SolidColorBrush x:Key="HighlightBrush" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Highlight}" />
+  <SolidColorBrush x:Key="AccentColorBrush" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent}" />
+  <SolidColorBrush x:Key="AccentColorBrush2" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent2}" />
+  <SolidColorBrush x:Key="AccentColorBrush3" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent3}" />
+  <SolidColorBrush x:Key="AccentColorBrush4" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent4}" />
+
+  <!-- Custom colors -->
+  <Color x:Key="ErrorColor">DarkRed</Color>
+  <Color x:Key="SuccessColor">DarkGreen</Color>
+
+  <SolidColorBrush x:Key="ErrorBrush" Color="{DynamicResource ErrorColor}" />
+  <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}" />
+
+  <!-- Theme -->
+
+  <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent}" />
+
+  <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5">
+    <GradientStop Color="{Binding Source={StaticResource AeroColorProvider}, Path=Highlight}" Offset="0" />
+    <GradientStop Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent3}" Offset="1" />
+  </LinearGradientBrush>
+
+  <SolidColorBrush x:Key="CheckmarkFill" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent}" />
+  <SolidColorBrush x:Key="RightArrowFill" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent}" />
+
+  <Color x:Key="IdealForegroundColor">White</Color>
+  <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{StaticResource IdealForegroundColor}" />
+  <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{StaticResource IdealForegroundColor}" Opacity="0.4" />
+  <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{StaticResource IdealForegroundColor}" />
+
+  <!-- DataGrid brushes -->
+  <SolidColorBrush x:Key="MetroDataGrid.HighlightBrush" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent}" />
+  <SolidColorBrush x:Key="MetroDataGrid.HighlightTextBrush" Color="{StaticResource IdealForegroundColor}" />
+  <SolidColorBrush x:Key="MetroDataGrid.MouseOverHighlightBrush" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent3}" />
+  <SolidColorBrush x:Key="MetroDataGrid.FocusBorderBrush" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent}" />
+  <SolidColorBrush x:Key="MetroDataGrid.InactiveSelectionHighlightBrush" Color="{Binding Source={StaticResource AeroColorProvider}, Path=Accent2}" />
+  <SolidColorBrush x:Key="MetroDataGrid.InactiveSelectionHighlightTextBrush" Color="{StaticResource IdealForegroundColor}" />
+</ResourceDictionary>
