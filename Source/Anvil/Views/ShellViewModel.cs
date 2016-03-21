@@ -22,8 +22,12 @@ namespace Anvil.Views
             Router = router;
 
             this.ObservableForProperty(x => x.UpdateViewModel)
-                .SelectMany(x => x.Value.WhenAnyValue(y => y.IsUpdateAvailable))
-                .Subscribe(_ => this.RaisePropertyChanged(nameof(IsUpdateAvailable)))
+                .SelectMany(x => x.Value.WhenAnyValue(y => y.IsUpdateAvailable, y => y.IsUpdateCompleted))
+                .Subscribe(_ =>
+                {
+                    this.RaisePropertyChanged(nameof(IsUpdateAvailable));
+                    this.RaisePropertyChanged(nameof(IsUpdateCompleted));
+                })
                 .TrackWith(Disposables);
 
             Task.Factory
@@ -43,6 +47,8 @@ namespace Anvil.Views
         }
 
         public bool IsUpdateAvailable => UpdateViewModel?.IsUpdateAvailable ?? false;
+
+        public bool IsUpdateCompleted => UpdateViewModel?.IsUpdateCompleted ?? false;
 
         public RoutingState Router { get; }
 

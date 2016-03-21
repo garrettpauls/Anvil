@@ -13,13 +13,20 @@
   Closing="_HandleClosing" ShowIconOnTitleBar="False">
   <controls:MetroWindow.RightWindowCommands>
     <controls:WindowCommands>
-      <Button Command="{Binding UpdateViewModel.ApplyUpdateCommand}">
-        <Path Data="{StaticResource Path_Download}"
-              Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-              Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16"
-              ToolTip="Apply update..."
-              Visibility="{Binding IsUpdateAvailable, Converter={StaticResource Converter_BooleanToVisibility}}" />
-      </Button>
+      <Grid>
+        <Button Command="{Binding UpdateViewModel.ApplyUpdateCommand}">
+          <Path Data="{StaticResource Path_Download}"
+                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16"
+                ToolTip="Apply update..."
+                Visibility="{Binding IsUpdateAvailable, Converter={StaticResource Converter_BooleanToVisibility}}" />
+        </Button>
+        <Path Data="{StaticResource Path_Restart }"
+              Fill="{DynamicResource TextBrush}"
+              Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Center" Height="16"
+              ToolTip="Restart application to complete update..."
+              Visibility="{Binding IsUpdateCompleted, Converter={StaticResource Converter_BooleanToVisibility}}" />
+      </Grid>
     </controls:WindowCommands>
   </controls:MetroWindow.RightWindowCommands>
   <Grid>

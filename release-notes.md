@@ -1,3 +1,8 @@
+### v0.0.1.2
+
+* Improved error handling when checking for updates.
+* Updated default logging to allow creating directories for log files.
+
 ### v0.0.1.1
 
 * Updated UI to use MahApps metro styles.
