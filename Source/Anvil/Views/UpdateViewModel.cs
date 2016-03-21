@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 using Anvil.Framework;
 using Anvil.Framework.ComponentModel;
@@ -21,6 +20,8 @@ namespace Anvil.Views
         private readonly ILogger mLog;
         private readonly IUpdateManager mUpdateManager;
         private bool mIsUpdateAvailable;
+
+        private bool mIsUpdateCompleted;
         private string mReleaseNotes;
         private UpdateInfo mUpdateInfo;
 
@@ -36,12 +37,10 @@ namespace Anvil.Views
 
             ApplyUpdateCommand = ReactiveCommand.Create(this.WhenAnyValue(x => x.IsUpdateAvailable));
             ApplyUpdateCommand
-                .ObserveOn(ThreadPoolScheduler.Instance)
                 .Subscribe(_ApplyUpdate).TrackWith(Disposables);
 
             CheckForUpdatesCommand = ReactiveCommand.Create();
             CheckForUpdatesCommand
-                .ObserveOn(ThreadPoolScheduler.Instance)
                 .Subscribe(_CheckForUpdates).TrackWith(Disposables);
         }
 
@@ -55,13 +54,19 @@ namespace Anvil.Views
             private set { this.RaiseAndSetIfChanged(ref mIsUpdateAvailable, value); }
         }
 
+        public bool IsUpdateCompleted
+        {
+            get { return mIsUpdateCompleted; }
+            private set { this.RaiseAndSetIfChanged(ref mIsUpdateCompleted, value); }
+        }
+
         public string ReleaseNotes
         {
             get { return mReleaseNotes; }
             private set { this.RaiseAndSetIfChanged(ref mReleaseNotes, value); }
         }
 
-        private async void _ApplyUpdate(object _)
+        private void _ApplyUpdate(object _)
         {
             IsUpdateAvailable = false;
 
@@ -71,23 +76,45 @@ namespace Anvil.Views
                 return;
             }
 
-            await mUpdateManager.ApplyReleases(update);
+            mUpdateManager
+                .ApplyReleases(update)
+                .ContinueWith(task =>
+                {
+                    if(task.Exception != null)
+                    {
+                        mLog.Error("Failed to apply updates", task.Exception);
+                        return;
+                    }
+
+                    IsUpdateCompleted = true;
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private async void _CheckForUpdates(object _)
+        private void _CheckForUpdates(object _)
         {
             mLog.Info("Checking for updates...");
 
-            mUpdateInfo = await mUpdateManager.CheckForUpdate();
-            IsUpdateAvailable =
-                mUpdateInfo != null &&
-                mUpdateInfo.FutureReleaseEntry != null && mUpdateInfo.CurrentlyInstalledVersion != null &&
-                mUpdateInfo.FutureReleaseEntry.Version != mUpdateInfo.CurrentlyInstalledVersion.Version;
+            mUpdateManager
+                .CheckForUpdate()
+                .ContinueWith(task =>
+                {
+                    if(task.Exception != null)
+                    {
+                        mLog.Error("Failed to check for updates", task.Exception);
+                        return;
+                    }
 
-            if(IsUpdateAvailable)
-            {
-                ReleaseNotes = _CreateReleaseNotes(mUpdateInfo);
-            }
+                    mUpdateInfo = task.Result;
+                    IsUpdateAvailable =
+                        mUpdateInfo != null &&
+                        mUpdateInfo.FutureReleaseEntry != null && mUpdateInfo.CurrentlyInstalledVersion != null &&
+                        mUpdateInfo.FutureReleaseEntry.Version != mUpdateInfo.CurrentlyInstalledVersion.Version;
+
+                    if(IsUpdateAvailable)
+                    {
+                        ReleaseNotes = _CreateReleaseNotes(mUpdateInfo);
+                    }
+                }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private static string _CreateReleaseNotes(UpdateInfo update)
