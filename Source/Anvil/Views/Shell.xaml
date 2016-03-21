@@ -10,7 +10,8 @@
   xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
   mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ShellViewModel}"
   Title="Anvil" Height="600" Width="800" MinHeight="400" MinWidth="400"
-  Closing="_HandleClosing" ShowIconOnTitleBar="False">
+  Closing="_HandleClosing" ShowIconOnTitleBar="False"
+  BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
   <controls:MetroWindow.RightWindowCommands>
     <controls:WindowCommands>
       <Grid>
