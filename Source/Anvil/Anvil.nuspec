@@ -2,14 +2,19 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Anvil</id>
-    <version>0.0.1.1</version>
+    <version>0.0.1.2</version>
     <title>Anvil</title>
     <authors>Garrett Pauls</authors>
     <licenseUrl>https://raw.githubusercontent.com/garrettpauls/Anvil/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/garrettpauls/Anvil/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A program launcher with configurable environment variables.</description>
-    <releaseNotes>### v0.0.1.1
+    <releaseNotes>### v0.0.1.2
+
+* Improved error handling when checking for updates.
+* Updated default logging to allow creating directories for log files.
+
+### v0.0.1.1
 
 * Updated UI to use MahApps metro styles.
 * Changed application to automatically check for updates (this may break automatic updating, so manually check for updates if you don't see any in the future).
