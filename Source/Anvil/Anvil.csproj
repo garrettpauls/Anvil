@@ -68,12 +68,8 @@
       <HintPath>..\..\packages\DeltaCompressionDotNet.1.0.0\lib\net45\DeltaCompressionDotNet.PatchApi.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DynamicData, Version=4.3.1.1090, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DynamicData.4.3.1.1090\lib\net45\DynamicData.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DynamicData.Plinq, Version=4.3.1.1090, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DynamicData.4.3.1.1090\lib\net45\DynamicData.Plinq.dll</HintPath>
+    <Reference Include="DynamicData, Version=4.5.0.1112, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DynamicData.4.5.0.1112\lib\net45\DynamicData.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="DynamicData.ReactiveUI, Version=2.2.0.2007, Culture=neutral, processorArchitecture=MSIL">
@@ -86,6 +82,10 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\squirrel.windows.1.2.5\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.2.4.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MahApps.Metro.1.2.4.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Mono.Cecil, Version=0.9.6.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -156,7 +156,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MahApps.Metro.1.2.4.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -178,6 +181,7 @@
     <Compile Include="Framework\MVVM\DisposableViewModel.cs" />
     <Compile Include="Framework\MVVM\RoutableViewModel.cs" />
     <Compile Include="Framework\MVVM\View.cs" />
+    <Compile Include="Framework\Reactive\DisposableReactiveObject.cs" />
     <Compile Include="Framework\Reactive\ReactiveCommandEx.cs" />
     <Compile Include="Framework\Reactive\ReactiveNotifyPropertyChangedExtensions.cs" />
     <Compile Include="Framework\Reactive\ReactiveFormattableSqlProviderExtensions.cs" />
@@ -201,6 +205,7 @@
     <Compile Include="Services\LaunchService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\ServiceModule.cs" />
+    <Compile Include="Theme\AeroColorProvider.cs" />
     <Compile Include="Views\ConfigurationUI\EnvironmentEditView.xaml.cs">
       <DependentUpon>EnvironmentEditView.xaml</DependentUpon>
     </Compile>
@@ -215,11 +220,11 @@
     </Compile>
     <Compile Include="Views\ConfigurationUI\MainConfigurationViewModel.cs" />
     <Compile Include="Views\Notification\NotifyIconModule.cs" />
-    <Compile Include="Views\Notification\UpdateProcessor.cs" />
     <Compile Include="Views\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ShellViewModel.cs" />
+    <Compile Include="Views\UpdateViewModel.cs" />
     <Compile Include="Views\ViewModule.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -230,6 +235,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Theme\AeroAccent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Theme\Converters.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
