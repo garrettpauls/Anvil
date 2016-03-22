@@ -76,18 +76,21 @@ namespace Anvil.Views
                 return;
             }
 
-            mUpdateManager
-                .ApplyReleases(update)
-                .ContinueWith(task =>
+            Task.Factory.StartNew(async () =>
+            {
+                await mUpdateManager.DownloadReleases(update.ReleasesToApply);
+                mLog.Info(await mUpdateManager.ApplyReleases(update));
+                await mUpdateManager.CreateUninstallerRegistryEntry();
+            }).ContinueWith(task =>
+            {
+                if(task.Exception != null)
                 {
-                    if(task.Exception != null)
-                    {
-                        mLog.Error("Failed to apply updates", task.Exception);
-                        return;
-                    }
+                    mLog.Error("Failed to apply updates", task.Exception);
+                    return;
+                }
 
-                    IsUpdateCompleted = true;
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+                IsUpdateCompleted = true;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void _CheckForUpdates(object _)

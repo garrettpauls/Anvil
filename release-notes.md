@@ -1,3 +1,7 @@
+### v0.0.1.4
+
+* Changed update process to download releases before applying them.
+
 ### v0.0.1.3
 
 * Added border to main window.
