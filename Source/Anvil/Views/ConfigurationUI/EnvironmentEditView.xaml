@@ -14,50 +14,66 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
     <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*" />
         <ColumnDefinition Width="4*" />
         <ColumnDefinition SharedSizeGroup="Buttons" />
+        <ColumnDefinition SharedSizeGroup="ScrollBarOffset" />
       </Grid.ColumnDefinitions>
-      <TextBlock Grid.Column="0" Text="Key" />
-      <TextBlock Grid.Column="1" Text="Value" />
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <TextBlock Grid.Column="0" Grid.Row="0" Text="Key" />
+      <TextBlock Grid.Column="1" Grid.Row="0" Text="Value" />
+      <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 0 0 1" Margin="0 0 4 0" />
     </Grid>
 
-    <ItemsControl Grid.Row="1" ItemsSource="{Binding EnvironmentVariables}">
-      <ItemsControl.ItemTemplate>
-        <DataTemplate>
-          <Grid>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="1*" />
-              <ColumnDefinition Width="4*" />
-              <ColumnDefinition SharedSizeGroup="Buttons" />
-            </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Grid.Column="1" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Grid.Column="2" Content="x" Width="16"
-                    Command="{Binding ElementName=LayoutRoot, Path=DataContext.DeleteCommand}"
-                    CommandParameter="{Binding}" />
-          </Grid>
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Margin="0 4">
+      <ItemsControl ItemsSource="{Binding EnvironmentVariables}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" x:Name="KeyColumn" />
+                <ColumnDefinition Width="4*" x:Name="ValueColumn" />
+                <ColumnDefinition SharedSizeGroup="Buttons" />
+              </Grid.ColumnDefinitions>
+              <TextBox Grid.Column="0" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
+              <TextBox Grid.Column="1" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
+              <Button Grid.Column="2" Content="x" MinWidth="16" HorizontalAlignment="Stretch"
+                      Command="{Binding ElementName=LayoutRoot, Path=DataContext.DeleteCommand}"
+                      CommandParameter="{Binding}" />
+            </Grid>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
 
     <Grid Grid.Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*" />
         <ColumnDefinition Width="4*" />
         <ColumnDefinition SharedSizeGroup="Buttons" />
+        <ColumnDefinition SharedSizeGroup="ScrollBarOffset" />
       </Grid.ColumnDefinitions>
-      <TextBox Grid.Column="0" Text="{Binding AddNewVariable.Key, UpdateSourceTrigger=PropertyChanged}">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Border Grid.Column="0" Grid.ColumnSpan="2" Margin="0 0 4 4" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 1 0 0" />
+
+      <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding AddNewVariable.Key, UpdateSourceTrigger=PropertyChanged}">
         <i:Interaction.Triggers>
           <triggers:KeyGestureTrigger Gesture="Enter">
             <actions:MoveFocusAction Direction="Next" />
           </triggers:KeyGestureTrigger>
         </i:Interaction.Triggers>
       </TextBox>
-      <TextBox Grid.Column="1" Text="{Binding AddNewVariable.Value, UpdateSourceTrigger=PropertyChanged}">
+      <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding AddNewVariable.Value, UpdateSourceTrigger=PropertyChanged}">
         <i:Interaction.Triggers>
           <triggers:KeyGestureTrigger Gesture="Enter">
             <actions:MoveFocusAction Direction="Previous" />
@@ -65,7 +81,8 @@
           </triggers:KeyGestureTrigger>
         </i:Interaction.Triggers>
       </TextBox>
-      <Button Grid.Column="2" Content="+" Command="{Binding AddCommand}" Width="16" />
+      <Button Grid.Column="2" Grid.Row="1" Content="+" Command="{Binding AddCommand}" MinWidth="16" HorizontalAlignment="Stretch" />
+      <ScrollBar Grid.Column="3" Grid.Row="1" Orientation="Vertical" Visibility="Hidden" Height="1" IsEnabled="False" />
     </Grid>
   </Grid>
 </UserControl>
