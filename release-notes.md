@@ -1,3 +1,8 @@
+### v0.0.1.3
+
+* Added border to main window.
+* Added scroll bar to environment variable collection editor.
+
 ### v0.0.1.2
 
 * Improved error handling when checking for updates.
