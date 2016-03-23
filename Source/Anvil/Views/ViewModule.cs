@@ -39,8 +39,12 @@ namespace Anvil.Views
                    .AsSelf()
                    .InstancePerLifetimeScope();
 
-            builder.RegisterType<NotifyIconManager>()
+            builder.RegisterType<TrayIcon>()
                    .AsImplementedInterfaces()
+                   .SingleInstance();
+
+            builder.RegisterType<TrayIconViewModel>()
+                   .AsSelf()
                    .SingleInstance();
         }
     }

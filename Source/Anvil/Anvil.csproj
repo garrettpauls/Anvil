@@ -80,6 +80,10 @@
       <HintPath>..\..\packages\FormattableSql.1.0.12-beta\lib\net46\FormattableSql.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Hardcodet.NotifyIcon.Wpf.1.0.6\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\squirrel.windows.1.2.5\lib\Net45\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
@@ -219,7 +223,10 @@
       <DependentUpon>MainConfigurationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigurationUI\MainConfigurationViewModel.cs" />
-    <Compile Include="Views\Notification\NotifyIconModule.cs" />
+    <Compile Include="Views\Notification\TrayIcon.xaml.cs">
+      <DependentUpon>TrayIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Notification\TrayIconViewModel.cs" />
     <Compile Include="Views\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
@@ -260,6 +267,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigurationUI\MainConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Notification\TrayIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

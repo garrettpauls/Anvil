@@ -5,7 +5,6 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:local="clr-namespace:Anvil.Views"
-  xmlns:properties="clr-namespace:Anvil.Properties"
   xmlns:reactiveUi="clr-namespace:ReactiveUI;assembly=ReactiveUI"
   xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
   mc:Ignorable="d" d:DataContext="{d:DesignInstance local:ShellViewModel}"
