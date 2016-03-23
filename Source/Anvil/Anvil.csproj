@@ -194,6 +194,7 @@
     <Compile Include="Framework\Xaml\Actions\MoveFocusAction.cs" />
     <Compile Include="Framework\Xaml\Actions\SelectAllTextAction.cs" />
     <Compile Include="Framework\Xaml\Behaviors\TreeViewSelectedItemBehavior.cs" />
+    <Compile Include="Framework\Xaml\Controls\DataTypeTemplateSelector.cs" />
     <Compile Include="Framework\Xaml\Controls\Extensions\TextBoxEx.cs" />
     <Compile Include="Framework\Xaml\Converters\TextToUpperCaseConverter.cs" />
     <Compile Include="Framework\Xaml\Triggers\KeyGestureTrigger.cs" />
@@ -214,6 +215,7 @@
       <DependentUpon>EnvironmentEditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigurationUI\EnvironmentEditViewModel.cs" />
+    <Compile Include="Views\ConfigurationUI\EditableLaunchGroupTreeNode.cs" />
     <Compile Include="Views\ConfigurationUI\LaunchGroupTreeNode.cs" />
     <Compile Include="Views\ConfigurationUI\LaunchItemEditView.xaml.cs">
       <DependentUpon>LaunchItemEditView.xaml</DependentUpon>
@@ -223,9 +225,12 @@
       <DependentUpon>MainConfigurationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigurationUI\MainConfigurationViewModel.cs" />
+    <Compile Include="Views\Notification\ITrayIconMenuItem.cs" />
     <Compile Include="Views\Notification\TrayIcon.xaml.cs">
       <DependentUpon>TrayIcon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Notification\TrayIconLaunchGroupTreeNode.cs" />
+    <Compile Include="Views\Notification\TrayIconLaunchItemTreeNode.cs" />
     <Compile Include="Views\Notification\TrayIconViewModel.cs" />
     <Compile Include="Views\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>

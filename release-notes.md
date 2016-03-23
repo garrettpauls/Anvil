@@ -1,3 +1,8 @@
+### v0.0.1.5
+
+* Replaced system tray context menu with WPF-style menu.
+* Added ability to launch items from system tray menu.
+
 ### v0.0.1.4
 
 * Changed update process to download releases before applying them.

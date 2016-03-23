@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Threading;
 
 using Anvil.Framework;
 
@@ -39,6 +40,7 @@ namespace Anvil
 
             builder.RegisterType<App>().AsSelf().As<Application>().SingleInstance();
             builder.Register(context => AppDomain.CurrentDomain).As<AppDomain>().SingleInstance();
+            builder.Register(context => Dispatcher.CurrentDispatcher).As<Dispatcher>().SingleInstance();
         }
 
         private static void _ConfigureLogging(IContainer lifetime)

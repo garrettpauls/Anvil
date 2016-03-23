@@ -19,9 +19,9 @@ namespace Anvil.Views.ConfigurationUI
     public sealed class MainConfigurationViewModel : RoutableViewModel
     {
         private readonly IDataService mDataService;
-        private readonly ReadOnlyObservableCollection<LaunchGroupTreeNode> mLaunchGroups;
+        private readonly ReadOnlyObservableCollection<EditableLaunchGroupTreeNode> mLaunchGroups;
 
-        private LaunchGroupTreeNode mSelectedGroup;
+        private EditableLaunchGroupTreeNode mSelectedGroup;
 
         public MainConfigurationViewModel(IDataService dataService, ILaunchService launchService, IScreen hostScreen)
             : base("config/main", hostScreen)
@@ -35,8 +35,8 @@ namespace Anvil.Views.ConfigurationUI
                 .LaunchGroups.Connect()
                 .ObserveOnDispatcher()
                 .TransformToTree(grp => grp.ParentGroupId ?? -1)
-                .Transform(x => new LaunchGroupTreeNode(x, dataService, launchService, hostScreen))
-                .Sort(SortExpressionComparer<LaunchGroupTreeNode>.Ascending(x => x.Model.Name))
+                .Transform(x => new EditableLaunchGroupTreeNode(x, dataService, launchService, hostScreen))
+                .Sort(SortExpressionComparer<EditableLaunchGroupTreeNode>.Ascending(x => x.Model.Name))
                 .Bind(out mLaunchGroups).DisposeMany()
                 .Subscribe().TrackWith(Disposables);
 
@@ -49,9 +49,9 @@ namespace Anvil.Views.ConfigurationUI
 
         public ReactiveCommand<object> AddGroupCommand { get; }
 
-        public ReadOnlyObservableCollection<LaunchGroupTreeNode> LaunchGroups => mLaunchGroups;
+        public ReadOnlyObservableCollection<EditableLaunchGroupTreeNode> LaunchGroups => mLaunchGroups;
 
-        public LaunchGroupTreeNode SelectedGroup
+        public EditableLaunchGroupTreeNode SelectedGroup
         {
             get { return mSelectedGroup; }
             set { this.RaiseAndSetIfChanged(ref mSelectedGroup, value); }
