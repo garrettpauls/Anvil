@@ -2,14 +2,19 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Anvil</id>
-    <version>0.0.1.4</version>
+    <version>0.0.1.5</version>
     <title>Anvil</title>
     <authors>Garrett Pauls</authors>
     <licenseUrl>https://raw.githubusercontent.com/garrettpauls/Anvil/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/garrettpauls/Anvil/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A program launcher with configurable environment variables.</description>
-    <releaseNotes>### v0.0.1.4
+    <releaseNotes>### v0.0.1.5
+
+* Replaced system tray context menu with WPF-style menu.
+* Added ability to launch items from system tray menu.
+
+### v0.0.1.4
 
 * Changed update process to download releases before applying them.
 
