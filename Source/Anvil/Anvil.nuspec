@@ -2,14 +2,19 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Anvil</id>
-    <version>0.0.1.6</version>
+    <version>0.0.1.7</version>
     <title>Anvil</title>
     <authors>Garrett Pauls</authors>
     <licenseUrl>https://raw.githubusercontent.com/garrettpauls/Anvil/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/garrettpauls/Anvil/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A program launcher with configurable environment variables.</description>
-    <releaseNotes>### v0.0.1.6
+    <releaseNotes>### v0.0.1.7
+
+* Added forced creation of logs directory as NLog doesn't reliably create it.
+* Fixed issue #4. The launcher path and working directory browse buttons now update the value correctly.
+
+### v0.0.1.6
 
 * Updated environment variable support to expand variables as much as possible
   before launching a program.

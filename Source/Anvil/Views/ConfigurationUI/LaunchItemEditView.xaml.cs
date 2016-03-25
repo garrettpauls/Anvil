@@ -16,6 +16,8 @@ namespace Anvil.Views.ConfigurationUI
             InitializeComponent();
         }
 
+        private LaunchItemEditViewModel _ViewModel => (LaunchItemEditViewModel) DataContext;
+
         private void _LookupFile(object sender, RoutedEventArgs e)
         {
             var dialog = new OpenFileDialog();
@@ -29,7 +31,7 @@ namespace Anvil.Views.ConfigurationUI
 
             if(dialog.ShowDialog(Window.GetWindow(this)) ?? false)
             {
-                FileTextBox.Text = dialog.FileName;
+                _ViewModel.Model.Path = dialog.FileName;
             }
         }
 
@@ -39,7 +41,7 @@ namespace Anvil.Views.ConfigurationUI
 
             if(dialog.ShowDialog(Window.GetWindow(this)) ?? false)
             {
-                WorkingDirectoryTextBox.Text = dialog.SelectedPath;
+                _ViewModel.Model.WorkingDirectory = dialog.SelectedPath;
             }
         }
     }

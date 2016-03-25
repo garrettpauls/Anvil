@@ -1,6 +1,7 @@
-### vNext
+### v0.0.1.7
 
 * Added forced creation of logs directory as NLog doesn't reliably create it.
+* Fixed issue #4. The launcher path and working directory browse buttons now update the value correctly.
 
 ### v0.0.1.6
 
