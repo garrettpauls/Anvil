@@ -1,3 +1,9 @@
+### v0.0.1.8
+
+* Added a settings menu.
+* Added setting to use pre-release updates or not.
+* Added setting to close to the system tray when main window closes.
+
 ### v0.0.1.7
 
 * Added forced creation of logs directory as NLog doesn't reliably create it.

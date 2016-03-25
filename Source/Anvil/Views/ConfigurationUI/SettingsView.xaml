@@ -1,0 +1,26 @@
+﻿<local:SettingsViewImpl
+  x:Class="Anvil.Views.ConfigurationUI.SettingsView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:Anvil.Views.ConfigurationUI"
+  mc:Ignorable="d" d:DataContext="{d:DesignInstance local:SettingsViewModel}"
+  d:DesignHeight="300" d:DesignWidth="300">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+      <StackPanel Orientation="Vertical">
+        <CheckBox IsChecked="{Binding Configuration.CloseToSystemTray}" Content="Close to system tray" Margin="4" />
+        <CheckBox IsChecked="{Binding Configuration.IncludePreReleaseVersions}" Content="Include pre-release updates" Margin="4" />
+      </StackPanel>
+    </ScrollViewer>
+
+    <Button Grid.Row="1" HorizontalAlignment="Right" Content="Done" Command="{Binding HostScreen.Router.NavigateBack}" />
+
+  </Grid>
+</local:SettingsViewImpl>

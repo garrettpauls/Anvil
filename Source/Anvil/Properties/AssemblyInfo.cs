@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyVersion("0.0.1.7")]
-[assembly: AssemblyFileVersion("0.0.1.7")]
+[assembly: AssemblyVersion("0.0.1.8")]
+[assembly: AssemblyFileVersion("0.0.1.8")]
 [assembly: AssemblyTitle("Anvil")]
 [assembly: AssemblyDescription("A program launcher with configurable environment variables.")]
 [assembly: AssemblyConfiguration("")]

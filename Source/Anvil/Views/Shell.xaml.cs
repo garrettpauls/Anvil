@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 
+using Anvil.Services;
 using Anvil.Views.ConfigurationUI;
 
 using MahApps.Metro.Controls;
@@ -15,8 +16,11 @@ namespace Anvil.Views
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(ShellViewModel), typeof(Shell), new PropertyMetadata(default(ShellViewModel)));
 
-        public Shell(ShellViewModel viewModel, RoutingState router, Func<MainConfigurationViewModel> initialViewFactory)
+        private readonly IConfiguration mConfiguration;
+
+        public Shell(ShellViewModel viewModel, RoutingState router, Func<MainConfigurationViewModel> initialViewFactory, IConfiguration configuration)
         {
+            mConfiguration = configuration;
             InitializeComponent();
 
             this.WhenAnyValue(x => x.ViewModel).BindTo(this, x => x.DataContext);
@@ -39,8 +43,15 @@ namespace Anvil.Views
 
         private void _HandleClosing(object sender, CancelEventArgs e)
         {
-            e.Cancel = true;
-            Hide();
+            if(mConfiguration.CloseToSystemTray)
+            {
+                e.Cancel = true;
+                Hide();
+            }
+            else
+            {
+                Application.Current.Shutdown();
+            }
         }
     }
 }

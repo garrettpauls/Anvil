@@ -13,7 +13,14 @@
   BorderThickness="1" BorderBrush="{DynamicResource AccentColorBrush}">
   <controls:MetroWindow.RightWindowCommands>
     <controls:WindowCommands>
+      <Button Content="settings" Command="{Binding ShowSettingsCommand}" />
       <Grid>
+        <Grid.Visibility>
+          <MultiBinding Converter="{StaticResource Converter_MultiVisibilityOr}">
+            <Binding Path="IsUpdateAvailable" Converter="{StaticResource Converter_BooleanToVisibility}" />
+            <Binding Path="IsUpdateCompleted" Converter="{StaticResource Converter_BooleanToVisibility}" />
+          </MultiBinding>
+        </Grid.Visibility>
         <Button Command="{Binding UpdateViewModel.ApplyUpdateCommand}">
           <Path Data="{StaticResource Path_Download}"
                 Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"

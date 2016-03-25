@@ -46,5 +46,17 @@ namespace Anvil.Properties {
                 this["UpdateUrl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CloseToSystemTray {
+            get {
+                return ((bool)(this["CloseToSystemTray"]));
+            }
+            set {
+                this["CloseToSystemTray"] = value;
+            }
+        }
     }
 }

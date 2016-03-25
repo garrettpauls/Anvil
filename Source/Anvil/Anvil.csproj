@@ -214,13 +214,14 @@
     <Compile Include="Framework\Xaml\Controls\DataTypeTemplateSelector.cs" />
     <Compile Include="Framework\Xaml\Controls\Extensions\TextBoxEx.cs" />
     <Compile Include="Framework\Xaml\Converters\TextToUpperCaseConverter.cs" />
+    <Compile Include="Framework\Xaml\Converters\VisibilityOrMultiConverter.cs" />
     <Compile Include="Framework\Xaml\Triggers\KeyGestureTrigger.cs" />
     <Compile Include="Models\EnvironmentVariable.cs" />
     <Compile Include="Models\EnvironmentVariableSet.cs" />
     <Compile Include="Models\LaunchGroup.cs" />
     <Compile Include="Models\LaunchItem.cs" />
     <Compile Include="Models\Model.cs" />
-    <Compile Include="Services\ConfigurationService.cs" />
+    <Compile Include="Services\Configuration.cs" />
     <Compile Include="Services\Data\DataService.cs" />
     <Compile Include="Services\Data\PersistenceService.cs" />
     <Compile Include="Services\Data\SqlService.cs" />
@@ -243,6 +244,10 @@
       <DependentUpon>MainConfigurationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ConfigurationUI\MainConfigurationViewModel.cs" />
+    <Compile Include="Views\ConfigurationUI\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfigurationUI\SettingsViewModel.cs" />
     <Compile Include="Views\Notification\ITrayIconMenuItem.cs" />
     <Compile Include="Views\Notification\TrayIcon.xaml.cs">
       <DependentUpon>TrayIcon.xaml</DependentUpon>
@@ -290,6 +295,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ConfigurationUI\MainConfigurationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfigurationUI\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

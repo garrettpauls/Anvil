@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Anvil.Framework.ComponentModel;
 using Anvil.Framework.Reactive;
+using Anvil.Views.ConfigurationUI;
 
 using Autofac.Extras.NLog;
 
@@ -15,11 +16,17 @@ namespace Anvil.Views
 {
     public sealed class ShellViewModel : DisposableReactiveObject, IScreen
     {
+        private readonly Func<SettingsViewModel> mSettingsViewModelFactory;
         private UpdateViewModel mUpdateViewModel;
 
-        public ShellViewModel(RoutingState router, Func<IUpdateManager> updateManagerFactory, ILogger log)
+        public ShellViewModel(RoutingState router, Func<SettingsViewModel> settingsViewModelFactory, Func<IUpdateManager> updateManagerFactory, ILogger log)
         {
+            mSettingsViewModelFactory = settingsViewModelFactory;
             Router = router;
+
+            var canShowSettings = Router.CurrentViewModel.Select(vm => !(vm is SettingsViewModel));
+            ShowSettingsCommand = ReactiveCommand.Create(canShowSettings);
+            ShowSettingsCommand.Subscribe(_ShowSettings).TrackWith(Disposables);
 
             this.ObservableForProperty(x => x.UpdateViewModel)
                 .SelectMany(x => x.Value.WhenAnyValue(y => y.IsUpdateAvailable, y => y.IsUpdateCompleted))
@@ -52,10 +59,17 @@ namespace Anvil.Views
 
         public RoutingState Router { get; }
 
+        public ReactiveCommand<object> ShowSettingsCommand { get; }
+
         public UpdateViewModel UpdateViewModel
         {
             get { return mUpdateViewModel; }
             private set { this.RaiseAndSetIfChanged(ref mUpdateViewModel, value); }
+        }
+
+        private void _ShowSettings(object _)
+        {
+            Router.Navigate.Execute(mSettingsViewModelFactory());
         }
     }
 }

@@ -2,14 +2,20 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Anvil</id>
-    <version>0.0.1.7</version>
+    <version>0.0.1.8</version>
     <title>Anvil</title>
     <authors>Garrett Pauls</authors>
     <licenseUrl>https://raw.githubusercontent.com/garrettpauls/Anvil/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/garrettpauls/Anvil/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A program launcher with configurable environment variables.</description>
-    <releaseNotes>### v0.0.1.7
+    <releaseNotes>### v0.0.1.8
+
+* Added a settings menu.
+* Added setting to use pre-release updates or not.
+* Added setting to close to the system tray when main window closes.
+
+### v0.0.1.7
 
 * Added forced creation of logs directory as NLog doesn't reliably create it.
 * Fixed issue #4. The launcher path and working directory browse buttons now update the value correctly.

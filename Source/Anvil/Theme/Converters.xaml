@@ -2,5 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converters="clr-namespace:Anvil.Framework.Xaml.Converters">
   <converters:TextToUpperCaseConverter x:Key="Converter_TextToUpperCase" />
+  <converters:VisibilityOrMultiConverter x:Key="Converter_MultiVisibilityOr" />
   <BooleanToVisibilityConverter x:Key="Converter_BooleanToVisibility" />
 </ResourceDictionary>

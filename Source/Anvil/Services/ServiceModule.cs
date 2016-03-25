@@ -27,7 +27,7 @@ namespace Anvil.Services
             builder
                 .Register(context =>
                 {
-                    var config = context.Resolve<IConfigurationService>();
+                    var config = context.Resolve<IConfiguration>();
                     return UpdateManager.GitHubUpdateManager(
                         config.UpdateUrl,
                         prerelease: config.IncludePreReleaseVersions).Result;
