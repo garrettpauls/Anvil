@@ -1,3 +1,7 @@
+### vNext
+
+* Added forced creation of logs directory as NLog doesn't reliably create it.
+
 ### v0.0.1.6
 
 * Updated environment variable support to expand variables as much as possible

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -17,6 +19,8 @@ namespace Anvil
     {
         public void Run()
         {
+            _CreateDefaultLogDirectory();
+
             var builder = new ContainerBuilder();
             _Configure(builder);
 
@@ -53,6 +57,25 @@ namespace Anvil
             app.DispatcherUnhandledException += (sender, args) => log.Error(args.Exception);
             domain.UnhandledException += (sender, args) => log.Error((Exception) args.ExceptionObject);
             domain.FirstChanceException += (sender, args) => log.Error(args.Exception);
+        }
+
+        private static void _CreateDefaultLogDirectory()
+        {
+            // NLog doesn't reliably create the logs directory when it's missing
+            // so we force it to exist now.
+            var defaultLogDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+
+            try
+            {
+                Directory.CreateDirectory(defaultLogDir);
+            }
+            catch(Exception ex)
+            {
+                var message = $"Failed to create default log directory {defaultLogDir}: {ex.Message}\r\n\r\n{ex}";
+
+                Debug.WriteLine(message);
+                Console.Error.WriteLine(message);
+            }
         }
 
         [STAThread]
