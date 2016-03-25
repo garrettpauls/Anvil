@@ -1,3 +1,10 @@
+### v0.0.1.6
+
+* Updated environment variable support to expand variables as much as possible
+  before launching a program.
+* Environment variables in the program path and working directory are also
+  expanded before launch.
+
 ### v0.0.1.5
 
 * Replaced system tray context menu with WPF-style menu.

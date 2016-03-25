@@ -21,10 +21,12 @@ namespace Anvil.Services
     public sealed class LaunchService : ILaunchService
     {
         private readonly IDataService mDataService;
+        private readonly IEnvironmentVariableExpander mExpander;
 
-        public LaunchService(IDataService dataService)
+        public LaunchService(IDataService dataService, IEnvironmentVariableExpander expander)
         {
             mDataService = dataService;
+            mExpander = expander;
         }
 
         private EnvironmentVariableSet _GetEnvironmentVariables(LaunchItem item)
@@ -42,17 +44,19 @@ namespace Anvil.Services
                 var parentVars = mDataService.GetEnvironmentVariableSnapshotFor(parent);
                 foreach(var envVar in parentVars)
                 {
-                    environment.MergeAdd(envVar.Key, envVar.Value);
+                    environment[envVar.Key] = envVar.Value;
                 }
             }
 
             var itemVars = mDataService.GetEnvironmentVariableSnapshotFor(item);
             foreach(var envVar in itemVars)
             {
-                environment.MergeAdd(envVar.Key, envVar.Value);
+                environment[envVar.Key] = envVar.Value;
             }
 
-            return environment;
+            var expanded = mExpander.Expand(environment);
+
+            return new EnvironmentVariableSet(expanded);
         }
 
         private IEnumerable<LaunchGroup> _GetParentLaunchGroups(LaunchItem item)
@@ -71,9 +75,13 @@ namespace Anvil.Services
         public void Launch(LaunchItem item)
         {
             var environmentVariables = _GetEnvironmentVariables(item);
-            var fileName = environmentVariables.Expand(item.Path);
-            var startInfo = new ProcessStartInfo(fileName, item.Arguments);
-            startInfo.WorkingDirectory = DirectoryEx.FirstExisting(item.WorkingDirectory, Path.GetDirectoryName(item.Path));
+
+            var fileName = mExpander.ExpandValue(environmentVariables, item.Path);
+            var arguments = mExpander.ExpandValue(environmentVariables, item.Arguments);
+            var workingDirectory = mExpander.ExpandValue(environmentVariables, item.WorkingDirectory);
+
+            var startInfo = new ProcessStartInfo(fileName, arguments);
+            startInfo.WorkingDirectory = DirectoryEx.FirstExisting(workingDirectory, Path.GetDirectoryName(fileName));
             startInfo.UseShellExecute = false;
 
             foreach(var envVar in environmentVariables)
