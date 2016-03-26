@@ -1,3 +1,7 @@
+### vNext
+
+* Added a balloon notification when a program fails to launch.
+
 ### v0.0.1.8
 
 * Added a settings menu.

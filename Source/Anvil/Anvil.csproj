@@ -226,6 +226,7 @@
     <Compile Include="Services\Data\PersistenceService.cs" />
     <Compile Include="Services\Data\SqlService.cs" />
     <Compile Include="Services\EnvironmentVariableExpander.cs" />
+    <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\LaunchService.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\ServiceModule.cs" />

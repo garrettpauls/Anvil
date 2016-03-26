@@ -9,6 +9,8 @@ using Anvil.Framework.IO;
 using Anvil.Models;
 using Anvil.Services.Data;
 
+using Autofac.Extras.NLog;
+
 using DynamicData.Kernel;
 
 namespace Anvil.Services
@@ -22,11 +24,15 @@ namespace Anvil.Services
     {
         private readonly IDataService mDataService;
         private readonly IEnvironmentVariableExpander mExpander;
+        private readonly ILogger mLog;
+        private readonly INotificationService mNotificationService;
 
-        public LaunchService(IDataService dataService, IEnvironmentVariableExpander expander)
+        public LaunchService(IDataService dataService, IEnvironmentVariableExpander expander, INotificationService notificationService, ILogger log)
         {
             mDataService = dataService;
             mExpander = expander;
+            mNotificationService = notificationService;
+            mLog = log;
         }
 
         private EnvironmentVariableSet _GetEnvironmentVariables(LaunchItem item)
@@ -74,22 +80,30 @@ namespace Anvil.Services
 
         public void Launch(LaunchItem item)
         {
-            var environmentVariables = _GetEnvironmentVariables(item);
-
-            var fileName = mExpander.ExpandValue(environmentVariables, item.Path);
-            var arguments = mExpander.ExpandValue(environmentVariables, item.Arguments);
-            var workingDirectory = mExpander.ExpandValue(environmentVariables, item.WorkingDirectory);
-
-            var startInfo = new ProcessStartInfo(fileName, arguments);
-            startInfo.WorkingDirectory = DirectoryEx.FirstExisting(workingDirectory, Path.GetDirectoryName(fileName));
-            startInfo.UseShellExecute = false;
-
-            foreach(var envVar in environmentVariables)
+            try
             {
-                startInfo.Environment[envVar.Key] = envVar.Value;
-            }
+                var environmentVariables = _GetEnvironmentVariables(item);
 
-            Process.Start(startInfo)?.Dispose();
+                var fileName = mExpander.ExpandValue(environmentVariables, item.Path);
+                var arguments = mExpander.ExpandValue(environmentVariables, item.Arguments);
+                var workingDirectory = mExpander.ExpandValue(environmentVariables, item.WorkingDirectory);
+
+                var startInfo = new ProcessStartInfo(fileName, arguments);
+                startInfo.WorkingDirectory = DirectoryEx.FirstExisting(workingDirectory, Path.GetDirectoryName(fileName));
+                startInfo.UseShellExecute = false;
+
+                foreach(var envVar in environmentVariables)
+                {
+                    startInfo.Environment[envVar.Key] = envVar.Value;
+                }
+
+                Process.Start(startInfo)?.Dispose();
+            }
+            catch(Exception ex)
+            {
+                mLog.Error($"Failed to launch {item.Name} ({item.Id})", ex);
+                mNotificationService.ShowError($"Failed to launch {item.Name}", ex);
+            }
         }
     }
 }
