@@ -1,20 +1,20 @@
 ﻿PRAGMA foreign_keys = off;
 
-CREATE TABLE EnvironmentVariable (
+CREATE TABLE IF NOT EXISTS EnvironmentVariable (
     Id    INTEGER PRIMARY KEY AUTOINCREMENT
                   NOT NULL,
     [Key] TEXT    NOT NULL,
     Value TEXT    NOT NULL
 );
 
-CREATE TABLE LaunchGroup (
+CREATE TABLE IF NOT EXISTS LaunchGroup (
     Id       INTEGER PRIMARY KEY AUTOINCREMENT
                      NOT NULL,
     ParentId INTEGER REFERENCES LaunchGroup (Id) ON DELETE CASCADE,
     Name     TEXT    NOT NULL
 );
 
-CREATE TABLE LaunchGroupVariables (
+CREATE TABLE IF NOT EXISTS LaunchGroupVariables (
     LaunchGroupId         INTEGER NOT NULL
                                   REFERENCES LaunchGroup (Id) ON DELETE CASCADE,
     EnvironmentVariableId INTEGER NOT NULL
@@ -25,7 +25,7 @@ CREATE TABLE LaunchGroupVariables (
     )
 );
 
-CREATE TABLE LaunchItem (
+CREATE TABLE IF NOT EXISTS LaunchItem (
     Id               INTEGER PRIMARY KEY AUTOINCREMENT
                              NOT NULL,
     ParentId         INTEGER REFERENCES LaunchGroup (Id) ON DELETE CASCADE
@@ -35,7 +35,7 @@ CREATE TABLE LaunchItem (
     WorkingDirectory TEXT    NOT NULL
 );
 
-CREATE TABLE LaunchItemVariables (
+CREATE TABLE IF NOT EXISTS LaunchItemVariables (
     LaunchItemId          INTEGER NOT NULL
                           REFERENCES LaunchItem (Id) ON DELETE CASCADE,
     EnvironmentVariableId INTEGER NOT NULL
@@ -45,5 +45,11 @@ CREATE TABLE LaunchItemVariables (
         EnvironmentVariableId
     )
 );
+
+CREATE TABLE IF NOT EXISTS DatabaseVersion (
+    Version INTEGER PRIMARY KEY DESC NOT NULL
+);
+
+INSERT OR IGNORE INTO DatabaseVersion (Version) VALUES (0);
 
 PRAGMA foreign_keys = on;

@@ -1,11 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using Anvil.Framework;
 using Anvil.Framework.Reactive;
 using Anvil.Models;
+using Anvil.Services.Data.Migrations;
+
+using Autofac;
+using Autofac.Extras.NLog;
+
+using FormattableSql.Core;
 
 namespace Anvil.Services.Data
 {
@@ -44,11 +52,43 @@ namespace Anvil.Services.Data
 
     public sealed class PersistenceService : IPersistenceService, IInitializableService
     {
+        private readonly ILifetimeScope mLifetime;
+        private readonly ILogger mLog;
         private readonly ISqlService mSql;
 
-        public PersistenceService(ISqlService sql)
+        public PersistenceService(ISqlService sql, ILifetimeScope lifetime, ILogger log)
         {
             mSql = sql;
+            mLifetime = lifetime;
+            mLog = log;
+        }
+
+        private async Task _CreateInitialTables(IFormattableSqlProvider sql)
+        {
+            using(var sqlStream = this.OpenRelativeResourceStream(@"CreateTables.sql"))
+            using(var sqlReader = new StreamReader(sqlStream))
+            {
+                await sql.ExecuteAsync(FormattableStringFactory.Create(sqlReader.ReadToEnd()));
+            }
+        }
+
+        private async Task _MigrateDatabase(IFormattableSqlProvider sql, long currentVersion)
+        {
+            using(var lifetime = mLifetime.BeginLifetimeScope())
+            {
+                var unappliedMigrations = lifetime
+                    .Resolve<IEnumerable<IMigration>>()
+                    .OrderBy(migration => migration.Version)
+                    .SkipWhile(migration => migration.Version <= currentVersion);
+
+                foreach(var migration in unappliedMigrations)
+                {
+                    mLog.Info($"Applying migration {migration.Version}: {migration.Description}");
+                    await migration.Up(sql);
+                    await sql.ExecuteAsync($"INSERT OR IGNORE INTO DatabaseVersion (Version) VALUES ({migration.Version})");
+                    mLog.Info($"Completed migration {migration.Version}");
+                }
+            }
         }
 
         public Task Add(LaunchGroup grp)
@@ -156,17 +196,19 @@ select env.Id as EnvVarId, liv.LaunchItemId, env.Key, env.Value
             await mSql.EnsureDatabaseExists();
             await mSql.Run(async sql =>
             {
-                var launcherTableExists = await sql.ExecuteScalarAsync<string>($"SELECT name FROM sqlite_master WHERE type='table' AND name='LaunchItem'");
-                if(!string.IsNullOrEmpty(launcherTableExists))
+                var databaseVersionExists = await sql.ExecuteScalarAsync<string>($"SELECT name FROM sqlite_master WHERE type='table' AND name='DatabaseVersion'");
+                if(string.IsNullOrEmpty(databaseVersionExists))
                 {
-                    return;
+                    mLog.Info("Creating tables");
+                    await _CreateInitialTables(sql);
+                    mLog.Info("Tables created");
                 }
 
-                using(var sqlStream = this.OpenRelativeResourceStream(@"CreateTables.sql"))
-                using(var sqlReader = new StreamReader(sqlStream))
-                {
-                    await sql.ExecuteAsync(FormattableStringFactory.Create(sqlReader.ReadToEnd()));
-                }
+                var currentVersion = await sql.ExecuteScalarAsync<long>($"SELECT Version FROM DatabaseVersion ORDER BY Version DESC LIMIT 1");
+                mLog.Info($"Current database version: {currentVersion}");
+                mLog.Info("Applying new database migrations");
+                await _MigrateDatabase(sql, currentVersion);
+                mLog.Info("Completed migrating database");
             });
         }
 

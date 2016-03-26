@@ -223,6 +223,9 @@
     <Compile Include="Models\Model.cs" />
     <Compile Include="Services\Configuration.cs" />
     <Compile Include="Services\Data\DataService.cs" />
+    <Compile Include="Services\Data\Migrations\IMigration.cs" />
+    <Compile Include="Services\Data\Migrations\Migration201603251742AddCommonLauncher.cs" />
+    <Compile Include="Services\Data\Migrations\MigrationModule.cs" />
     <Compile Include="Services\Data\PersistenceService.cs" />
     <Compile Include="Services\Data\SqlService.cs" />
     <Compile Include="Services\EnvironmentVariableExpander.cs" />
