@@ -1,6 +1,7 @@
-### vNext
+### v0.0.1.9
 
 * Added a balloon notification when a program fails to launch.
+* Automatically upgrades app settings when moving to a new version.
 
 ### v0.0.1.8
 

@@ -2,14 +2,19 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Anvil</id>
-    <version>0.0.1.8</version>
+    <version>0.0.1.9</version>
     <title>Anvil</title>
     <authors>Garrett Pauls</authors>
     <licenseUrl>https://raw.githubusercontent.com/garrettpauls/Anvil/master/License.txt</licenseUrl>
     <projectUrl>https://github.com/garrettpauls/Anvil/</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A program launcher with configurable environment variables.</description>
-    <releaseNotes>### v0.0.1.8
+    <releaseNotes>### v0.0.1.9
+
+* Added a balloon notification when a program fails to launch.
+* Automatically upgrades app settings when moving to a new version.
+
+### v0.0.1.8
 
 * Added a settings menu.
 * Added setting to use pre-release updates or not.

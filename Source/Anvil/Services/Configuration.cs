@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 using Anvil.Framework.ComponentModel;
 using Anvil.Framework.Reactive;
@@ -19,7 +20,7 @@ namespace Anvil.Services
         string UpdateUrl { get; }
     }
 
-    public sealed class Configuration : DisposableReactiveObject, IConfiguration
+    public sealed class Configuration : DisposableReactiveObject, IConfiguration, IInitializableService
     {
         private const string DEFAULT_UPDATE_URL = "https://github.com/garrettpauls/Anvil";
         private readonly Settings mSettings;
@@ -62,5 +63,10 @@ namespace Anvil.Services
         }
 
         public string UpdateUrl => (mSettings.UpdateUrl == "" ? null : mSettings.UpdateUrl) ?? DEFAULT_UPDATE_URL;
+
+        public Task InitializeAsync()
+        {
+            return Task.Factory.StartNew(mSettings.Upgrade);
+        }
     }
 }
