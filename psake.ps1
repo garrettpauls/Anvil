@@ -1,5 +1,5 @@
 Param(
-    [ValidateSet("Clean", "Compile", "NugetRestore", "Publish")]
+    [ValidateSet("Clean", "Compile", "NugetRestore", "Publish", "Release")]
     [string]$Target = "Compile",
     [switch]$Help
 )

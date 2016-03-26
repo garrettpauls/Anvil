@@ -20,6 +20,7 @@ task default `
      -depends Compile
 
 task Publish `
+     -alias Release `
      -depends NugetRestore, Clean, Compile, PackageNuspec, SquirrelReleasify
 
 task Compile `
