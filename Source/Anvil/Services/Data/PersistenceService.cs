@@ -72,20 +72,26 @@ namespace Anvil.Services.Data
             }
         }
 
-        private async Task _MigrateDatabase(IFormattableSqlProvider sql, long currentVersion)
+        private async Task _MigrateDatabase(IFormattableSqlProvider sql)
         {
             using(var lifetime = mLifetime.BeginLifetimeScope())
             {
                 var unappliedMigrations = lifetime
                     .Resolve<IEnumerable<IMigration>>()
-                    .OrderBy(migration => migration.Version)
-                    .SkipWhile(migration => migration.Version <= currentVersion);
+                    .OrderBy(migration => migration.Version);
 
                 foreach(var migration in unappliedMigrations)
                 {
+                    var isApplied = await sql.ExecuteScalarAsync<long>($"SELECT COUNT(*) FROM DatabaseVersion WHERE Version = {migration.Version}") > 0;
+                    if(isApplied)
+                    {
+                        mLog.Info($"Skipping already applied migration {migration.Version}");
+                        continue;
+                    }
+
                     mLog.Info($"Applying migration {migration.Version}: {migration.Description}");
                     await migration.Up(sql);
-                    await sql.ExecuteAsync($"INSERT OR IGNORE INTO DatabaseVersion (Version) VALUES ({migration.Version})");
+                    await sql.ExecuteAsync($"INSERT OR IGNORE INTO DatabaseVersion (Version, AppliedDateUTC, Description) VALUES ({migration.Version}, {DateTime.UtcNow}, {migration.Description})");
                     mLog.Info($"Completed migration {migration.Version}");
                 }
             }
@@ -204,10 +210,8 @@ select env.Id as EnvVarId, liv.LaunchItemId, env.Key, env.Value
                     mLog.Info("Tables created");
                 }
 
-                var currentVersion = await sql.ExecuteScalarAsync<long>($"SELECT Version FROM DatabaseVersion ORDER BY Version DESC LIMIT 1");
-                mLog.Info($"Current database version: {currentVersion}");
                 mLog.Info("Applying new database migrations");
-                await _MigrateDatabase(sql, currentVersion);
+                await _MigrateDatabase(sql);
                 mLog.Info("Completed migrating database");
             });
         }

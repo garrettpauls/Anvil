@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 
+using Anvil.Models;
 using Anvil.Services;
 using Anvil.Views.ConfigurationUI;
 
@@ -16,9 +17,9 @@ namespace Anvil.Views
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(
             "ViewModel", typeof(ShellViewModel), typeof(Shell), new PropertyMetadata(default(ShellViewModel)));
 
-        private readonly IConfiguration mConfiguration;
+        private readonly IConfigurationService mConfiguration;
 
-        public Shell(ShellViewModel viewModel, RoutingState router, Func<MainConfigurationViewModel> initialViewFactory, IConfiguration configuration)
+        public Shell(ShellViewModel viewModel, RoutingState router, Func<MainConfigurationViewModel> initialViewFactory, IConfigurationService configuration)
         {
             mConfiguration = configuration;
             InitializeComponent();
@@ -43,7 +44,7 @@ namespace Anvil.Views
 
         private void _HandleClosing(object sender, CancelEventArgs e)
         {
-            if(mConfiguration.CloseToSystemTray)
+            if(mConfiguration.GetValue(CommonConfigKeys.CloseToSystemTray, () => false))
             {
                 e.Cancel = true;
                 Hide();

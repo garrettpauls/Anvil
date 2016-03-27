@@ -22,41 +22,5 @@ namespace Anvil.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IncludePreRelease {
-            get {
-                return ((bool)(this["IncludePreRelease"]));
-            }
-            set {
-                this["IncludePreRelease"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string UpdateUrl {
-            get {
-                return ((string)(this["UpdateUrl"]));
-            }
-            set {
-                this["UpdateUrl"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool CloseToSystemTray {
-            get {
-                return ((bool)(this["CloseToSystemTray"]));
-            }
-            set {
-                this["CloseToSystemTray"] = value;
-            }
-        }
     }
 }

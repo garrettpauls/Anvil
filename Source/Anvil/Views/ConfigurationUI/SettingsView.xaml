@@ -15,8 +15,8 @@
 
     <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
       <StackPanel Orientation="Vertical">
-        <CheckBox IsChecked="{Binding Configuration.CloseToSystemTray}" Content="Close to system tray" Margin="4" />
-        <CheckBox IsChecked="{Binding Configuration.IncludePreReleaseVersions}" Content="Include pre-release updates" Margin="4" />
+        <CheckBox IsChecked="{Binding CloseToSystemTray}" Content="Close to system tray" Margin="4" />
+        <CheckBox IsChecked="{Binding IncludePreReleaseVersions}" Content="Include pre-release updates" Margin="4" />
       </StackPanel>
     </ScrollViewer>
 

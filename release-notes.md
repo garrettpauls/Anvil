@@ -1,3 +1,8 @@
+### v0.0.1.10
+
+* Migrated application configuration storage to the database instead
+  of the app.config file for consistent configuration between versions.
+
 ### v0.0.1.9
 
 * Added a balloon notification when a program fails to launch.

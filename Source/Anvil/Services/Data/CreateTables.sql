@@ -47,9 +47,9 @@ CREATE TABLE IF NOT EXISTS LaunchItemVariables (
 );
 
 CREATE TABLE IF NOT EXISTS DatabaseVersion (
-    Version INTEGER PRIMARY KEY DESC NOT NULL
+    Version        INTEGER PRIMARY KEY NOT NULL,
+    AppliedDateUTC DATETIME NOT NULL,
+    Description    TEXT NOT NULL
 );
-
-INSERT OR IGNORE INTO DatabaseVersion (Version) VALUES (0);
 
 PRAGMA foreign_keys = on;
