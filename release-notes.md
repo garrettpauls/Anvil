@@ -1,3 +1,7 @@
+### vNext
+
+* Added functionality to copy/paste environment variables.
+
 ### v0.0.1.10
 
 * Migrated application configuration storage to the database instead

@@ -18,6 +18,7 @@
     </Grid.RowDefinitions>
     <Grid Grid.Row="0">
       <Grid.ColumnDefinitions>
+        <ColumnDefinition SharedSizeGroup="SelectedCheckbox" />
         <ColumnDefinition Width="1*" />
         <ColumnDefinition Width="4*" />
         <ColumnDefinition SharedSizeGroup="Buttons" />
@@ -27,9 +28,13 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
-      <TextBlock Grid.Column="0" Grid.Row="0" Text="Key" />
-      <TextBlock Grid.Column="1" Grid.Row="0" Text="Value" />
-      <Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 0 0 1" Margin="0 0 4 0" />
+      <TextBlock Grid.Column="1" Grid.Row="0" Text="Key" />
+      <TextBlock Grid.Column="2" Grid.Row="0" Text="Value" />
+      <StackPanel Orientation="Horizontal" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Right">
+        <Button Content="Copy" Command="{Binding CopySelectedCommand}" />
+        <Button Content="Paste" Command="{Binding PasteCommand}" />
+      </StackPanel>
+      <Border Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 0 0 1" Margin="0 0 4 0" />
     </Grid>
 
     <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" Margin="0 4">
@@ -38,13 +43,15 @@
           <DataTemplate>
             <Grid>
               <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="SelectedCheckbox" />
                 <ColumnDefinition Width="1*" x:Name="KeyColumn" />
                 <ColumnDefinition Width="4*" x:Name="ValueColumn" />
                 <ColumnDefinition SharedSizeGroup="Buttons" />
               </Grid.ColumnDefinitions>
-              <TextBox Grid.Column="0" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" />
-              <TextBox Grid.Column="1" Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" />
-              <Button Grid.Column="2" Content="x" MinWidth="16" HorizontalAlignment="Stretch"
+              <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" />
+              <TextBox Grid.Column="1" Text="{Binding Model.Key, UpdateSourceTrigger=PropertyChanged}" />
+              <TextBox Grid.Column="2" Text="{Binding Model.Value, UpdateSourceTrigger=PropertyChanged}" />
+              <Button Grid.Column="3" Content="x" MinWidth="16" HorizontalAlignment="Stretch"
                       Command="{Binding ElementName=LayoutRoot, Path=DataContext.DeleteCommand}"
                       CommandParameter="{Binding}" />
             </Grid>
@@ -55,6 +62,7 @@
 
     <Grid Grid.Row="2">
       <Grid.ColumnDefinitions>
+        <ColumnDefinition SharedSizeGroup="SelectedCheckbox" />
         <ColumnDefinition Width="1*" />
         <ColumnDefinition Width="4*" />
         <ColumnDefinition SharedSizeGroup="Buttons" />
@@ -64,16 +72,16 @@
         <RowDefinition Height="Auto" />
         <RowDefinition Height="Auto" />
       </Grid.RowDefinitions>
-      <Border Grid.Column="0" Grid.ColumnSpan="2" Margin="0 0 4 4" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 1 0 0" />
+      <Border Grid.Column="1" Grid.ColumnSpan="2" Margin="0 0 4 4" BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="0 1 0 0" />
 
-      <TextBox Grid.Column="0" Grid.Row="1" Text="{Binding AddNewVariable.Key, UpdateSourceTrigger=PropertyChanged}">
+      <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding AddNewVariable.Key, UpdateSourceTrigger=PropertyChanged}">
         <i:Interaction.Triggers>
           <triggers:KeyGestureTrigger Gesture="Enter">
             <actions:MoveFocusAction Direction="Next" />
           </triggers:KeyGestureTrigger>
         </i:Interaction.Triggers>
       </TextBox>
-      <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding AddNewVariable.Value, UpdateSourceTrigger=PropertyChanged}">
+      <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding AddNewVariable.Value, UpdateSourceTrigger=PropertyChanged}">
         <i:Interaction.Triggers>
           <triggers:KeyGestureTrigger Gesture="Enter">
             <actions:MoveFocusAction Direction="Previous" />
@@ -81,8 +89,8 @@
           </triggers:KeyGestureTrigger>
         </i:Interaction.Triggers>
       </TextBox>
-      <Button Grid.Column="2" Grid.Row="1" Content="+" Command="{Binding AddCommand}" MinWidth="16" HorizontalAlignment="Stretch" />
-      <ScrollBar Grid.Column="3" Grid.Row="1" Orientation="Vertical" Visibility="Hidden" Height="1" IsEnabled="False" />
+      <Button Grid.Column="3" Grid.Row="1" Content="+" Command="{Binding AddCommand}" MinWidth="16" HorizontalAlignment="Stretch" />
+      <ScrollBar Grid.Column="4" Grid.Row="1" Orientation="Vertical" Visibility="Hidden" Height="1" IsEnabled="False" />
     </Grid>
   </Grid>
 </UserControl>
